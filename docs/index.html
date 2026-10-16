@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Bioacoustic analysis in R 2026</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -36,10 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ae0b5334a1ec0bf99af3d0c304a697d2.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-c875dbb4c9335aca9cc352e974a4ec92.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-a5f0e07c88d63b2cffd0e8312cae9cf7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-df20712ee2337fd19cd1f7acf2076561.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -176,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Course prep</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://codefile.io/f/inMsojTFoN"> 
+    <a class="nav-link" href="https://livecodeshare.vercel.app/room/1ecd4116"> 
 <span class="menu-text">Code sharing</span></a>
   </li>  
   <li class="nav-item">
@@ -186,7 +189,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/maRce10/ESA_BIR_2026/"> <i class="bi bi-github" role="img" aria-label="GitHub">
+    <a class="nav-link" href="https://github.com/maRce10/PRSTATS_BIR_2026/"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -217,9 +220,6 @@ ul.task-list li input[type="checkbox"] {
 <center>
 <font size="6"><b>Bioacoustic Analysis in R</b></font>
 </center>
-<center>
-<font size="5"><b><a href="https://esa.org/">Ecological Society of America</a><br></b></font>
-</center>
 <p><i></i></p><i>
 <center>
 <font size="4"><b><a href="https://marce10.github.io/">Marcelo Araya-Salas, PhD</a><br></b></font>
@@ -234,7 +234,7 @@ ul.task-list li input[type="checkbox"] {
 <p>The study of animal acoustic signals is a central tool for many fields in behavior, ecology, evolution and biodiversity monitoring. The accessibility of recording equipment and growing availability of open-access acoustic libraries provide an unprecedented opportunity to study animal acoustic signals at large temporal, geographic and taxonomic scales. However, the diversity of analytical methods and the multidimensionality of these signals posts significant challenges to conduct analyses that can quantify biologically meaningful variation. The recent development of acoustic analysis tools in the R programming environment provides a powerful means for overcoming these challenges, facilitating the gathering and organization of large acoustic data sets and the use of more elaborated analyses that better fit the studied acoustic signals and associated biological questions. The course will introduce students on the basic concepts in animal acoustic signal research as well as hands-on experience on analytical tools in R.</p>
 <section id="objetive" class="level3 unnumbered unlisted alert alert-info">
 <h3 class="unnumbered unlisted anchored" data-anchor-id="objetive">Objetive</h3>
-<p>Training biological science students and researchers in the detection and analysis of animal sounds in R. Specifically, it seeks to familiarize participants with computational tools in the R environment aiming at curating, detecting and analyzing animal acoustic signals, with an especial focus on quantifying fine-scale structural variation. The course will introduce the most relevant acoustics concepts to allow a detailed understanding of the metrics used for characterize acoustic signals. It will also guide participants through a variety of R packages for bioacoustics analysis, including seewave, tuneR, warbleR and baRulho.</p>
+<p>Training biological science students and researchers in the detection and analysis of animal sounds in R. Specifically, it seeks to familiarize participants with computational tools in the R environment aiming at curating, detecting and analyzing animal acoustic signals, with an especial focus on quantifying fine-scale structural variation. The course will introduce the most relevant acoustics concepts to allow a detailed understanding of the metrics used for characterize acoustic signals. It will also guide participants through a variety of R packages for bioacoustics analysis, including seewave, tuneR and warbleR.</p>
 </section>
 
 
@@ -291,13 +291,14 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -312,7 +313,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/marce10\.github\.io\/ESA_BIR_2026\/");
+        var filterRegex = new RegExp("https:\/\/marce10\.github\.io\/PRSTATS_BIR_2026\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

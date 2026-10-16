@@ -2,14 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-05-06">
+<meta name="dcterms.date" content="2026-10-16">
 
-<title>Bioacoustic analysis in R 2026</title>
+<title>Ge recordings from online repositories – Bioacoustic analysis in R 2026</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -22,8 +25,9 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 /* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -65,15 +69,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-c875dbb4c9335aca9cc352e974a4ec92.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-df20712ee2337fd19cd1f7acf2076561.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -119,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="floating nav-fixed">
+<body class="floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -131,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -145,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Program</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tutorials" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Tutorials</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-tutorials">    
@@ -200,7 +205,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-colab-notebooks" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-colab-notebooks" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Colab notebooks</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-colab-notebooks">    
@@ -233,13 +238,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/maRce10/ESA_BIR_2026/"> <i class="bi bi-github" role="img" aria-label="GitHub">
+    <a class="nav-link" href="https://github.com/maRce10/PRSTATS_BIR_2026/"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -258,13 +263,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
+<h1 class="title"><font size="7"><b>Ge recordings from online repositories</b></font></h1>
 </div>
 
 
@@ -275,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 6, 2026</p>
+      <p class="date">October 16, 2026</p>
     </div>
   </div>
   
@@ -298,40 +304,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="getting-recordings-from-online-repositories" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="getting-recordings-from-online-repositories"><span class="header-section-number">1</span> Getting recordings from online repositories</h2>
 <p>The suwo package offers several functions to query and download recordings (and other media) of animal vocalizations in online repositories. For instance, the following code return recordings metadata from Xeno-Canto:</p>
+<div class="alert alert-warning">
+<p>Xeno-Canto’s API requires a personal API key. Register for a free account at <a href="https://xeno-canto.org/account">xeno-canto.org/account</a> to get one, then set it as shown below before querying.</p>
+</div>
 <p>Example on how to get recording’s metadata (no downloading):</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suwo)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suwo)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>phae_his <span class="ot">&lt;-</span> <span class="fu">query_xenocanto</span>(<span class="st">'Phaethornis hispidus'</span>, <span class="at">all_data =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get cookies for WikiAves (only needs to be done once per session)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">access_wikiaves</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">xc_api_key =</span> <span class="st">"YOUR_API_KEY_HERE"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>phae_his <span class="ot">&lt;-</span> <span class="fu">query_xenocanto</span>(<span class="st">'Phaethornis hispidus'</span>, <span class="at">all_data =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Keep only song vocalizations:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>song_phae_his <span class="ot">&lt;-</span> phae_his[<span class="fu">grep</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, phae_his<span class="sc">$</span>vocalization_type), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>song_phae_his <span class="ot">&lt;-</span> phae_his[<span class="fu">grep</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, phae_his<span class="sc">$</span>vocalization_type), ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>Map locations using <code>map_locations()</code>:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_locations</span>(song_phae_his)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_locations</span>(song_phae_his)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-eeb0cac724457c64bcd5" style="width:100%;height:325px;"></div>
-<script type="application/json" data-for="htmlwidget-eeb0cac724457c64bcd5">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,true,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addCircleMarkers","args":[[-12.8659,-3.2653,-11.8667,-3.6,-3.4501,-8.751200000000001,-11.8667,-11.8667,-9.640000000000001,-10.53816667,-11.476,-11.476,-0.4714],[-71.367,-72.9295,-71.36669999999999,-73.15000000000001,-72.8801,-68.99379999999999,-71.36669999999999,-71.36669999999999,-55.94,-65.59283333,-69.51900000000001,-69.51900000000001,-76.4603],7,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":1,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.8},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[-12.8659,-3.2653,-11.8667,-3.6,-3.4501,-8.751200000000001,-11.8667,-11.8667,-9.640000000000001,-10.53816667,-11.476,-11.476,-0.4714],[-71.367,-72.9295,-71.36669999999999,-73.15000000000001,-72.8801,-68.99379999999999,-71.36669999999999,-71.36669999999999,-55.94,-65.59283333,-69.51900000000001,-69.51900000000001,-76.4603],6,null,null,{"interactive":true,"className":"","stroke":true,"color":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"weight":3,"opacity":0.5,"fill":true,"fillColor":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"fillOpacity":0.3},null,null,["<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/102622' target='_blank'>102622<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-07-27<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Amazonia Lodge<\/span><br/><b>User:<\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102622/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102622/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/102623' target='_blank'>102623<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2010-10-04<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>ExploNapo<\/span><br/><b>User:<\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102623/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102623/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/11798' target='_blank'>11798<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2003-08-19<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu, Madre de Dios<\/span><br/><b>User:<\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/11798/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/11798/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/257794' target='_blank'>257794<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 1997<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Loreto: between Iquitos and mouth of Río Napo<\/span><br/><b>User:<\/b> John v. Moore<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/257794/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/257794/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/28108' target='_blank'>28108<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2008-12-30<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Explorama Lodge, Loreto<\/span><br/><b>User:<\/b> David Geale<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/28108/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/28108/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/537502' target='_blank'>537502<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2017-06-21<br/><b>Country:<\/b> Brazil<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Purus River, Boca do Acre, State of Amazonas<\/span><br/><b>User:<\/b> Fernando Igor De Godoy<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/537502/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/537502/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/63848' target='_blank'>63848<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2001-09-30<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63848/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63848/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/63849' target='_blank'>63849<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2001-10-02<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63849/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63849/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/69017' target='_blank'>69017<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2004-05-19<br/><b>Country:<\/b> Brazil<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Mato Grosso; Rio Teles Peres, near Rio Cristalino<\/span><br/><b>User:<\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/69017/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/69017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/74017' target='_blank'>74017<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2005-10-07<br/><b>Country:<\/b> Bolivia<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cachuela Esperanza, Beni,  BO<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/74017/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/74017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/91507' target='_blank'>91507<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-11-17<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91507/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91507/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/91508' target='_blank'>91508<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-11-17<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91508/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91508/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/95003' target='_blank'>95003<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2009-07-06<br/><b>Country:<\/b> Ecuador<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Sacha Lodge, Sucumbios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/95003/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/95003/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-12.8659,-0.4714],"lng":[-76.4603,-55.94]}},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\nfunction(el, x) {\n\n  var map = this;\n  (function() {\n    if (typeof L.Control.Fullscreen === 'undefined') {\n      var cssUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css';\n      var jsUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js';\n      var link = document.createElement('link');\n      link.rel = 'stylesheet';\n      link.href = cssUrl;\n      document.head.appendChild(link);\n      var script = document.createElement('script');\n      script.src = jsUrl;\n      script.onload = function() {\n        map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n      };\n      document.head.appendChild(script);\n    } else {\n      map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n    }\n  })();\n\n  var popupsVisible = false;\n  var uid = 'map-' + Math.random().toString(36).substr(2, 9);\n\n  var control = L.control({position: 'topright'});\n\n  control.onAdd = function(map) {\n\n    var div = L.DomUtil.create(\n      'div',\n      'leaflet-bar leaflet-control'\n    );\n\n    div.innerHTML =\n      '<div id=\"popup-toggle-' + uid +\n      '\" style=\"display:flex;align-items:center;' +\n      'gap:6px;background:white;padding:6px 10px;' +\n      'border-radius:6px;box-shadow:0 1px 5px ' +\n      'rgba(0,0,0,0.3);font-size:12px;cursor:pointer;\">' +\n      '<span>Popups<\/span>' +\n      '<div id=\"toggle-switch-' + uid +\n      '\" style=\"width:34px;height:18px;' +\n      'background:#ccc;border-radius:9px;' +\n      'position:relative;\">' +\n      '<div id=\"toggle-knob-' + uid +\n      '\" style=\"width:14px;height:14px;' +\n      'background:white;border-radius:50%;' +\n      'position:absolute;top:2px;left:2px;\">' +\n      '<\/div><\/div><\/div>';\n\n    return div;\n  };\n\n  control.addTo(map);\n\n  function setUI(on) {\n    var knob = el.querySelector('#toggle-knob-' + uid);\n    var sw = el.querySelector('#toggle-switch-' + uid);\n    if (!knob || !sw) return;\n    knob.style.transition = '0.3s';\n    if (on) {\n      knob.style.left = '18px';\n      sw.style.background = '#4CAF50';\n    } else {\n      knob.style.left = '2px';\n      sw.style.background = '#ccc';\n    }\n  }\n\n  function showPopups() {\n    map._allPopups = [];\n    var sorted = popupData.slice().sort(function(a, b) {\n      return b.latitude - a.latitude;\n    });\n    sorted.forEach(function(d) {\n      if (!isNaN(d.longitude) && !isNaN(d.latitude)) {\n        var p = L.popup({autoClose:false, closeOnClick:false})\n          .setLatLng([d.latitude, d.longitude])\n          .setContent(d.popup)\n          .addTo(map);\n        map._allPopups.push(p);\n      }\n    });\n  }\n\n  function hidePopups() {\n    if (map._allPopups) {\n      map._allPopups.forEach(function(p) {\n        map.removeLayer(p);\n      });\n      map._allPopups = [];\n    }\n  }\n\n  var popupData = [{\"latitude\":-12.8659,\"longitude\":-71.367,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/102622' target='_blank'>102622<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-07-27<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Amazonia Lodge<\\/span><br/><b>User:<\\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102622/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102622/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.2653,\"longitude\":-72.9295,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/102623' target='_blank'>102623<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2010-10-04<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>ExploNapo<\\/span><br/><b>User:<\\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102623/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102623/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/11798' target='_blank'>11798<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2003-08-19<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu, Madre de Dios<\\/span><br/><b>User:<\\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/11798/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/11798/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.6,\"longitude\":-73.15,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/257794' target='_blank'>257794<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 1997<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Loreto: between Iquitos and mouth of Río Napo<\\/span><br/><b>User:<\\/b> John v. Moore<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/257794/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/257794/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.4501,\"longitude\":-72.8801,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/28108' target='_blank'>28108<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2008-12-30<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Explorama Lodge, Loreto<\\/span><br/><b>User:<\\/b> David Geale<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/28108/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/28108/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-8.7512,\"longitude\":-68.9938,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/537502' target='_blank'>537502<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2017-06-21<br/><b>Country:<\\/b> Brazil<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Purus River, Boca do Acre, State of Amazonas<\\/span><br/><b>User:<\\/b> Fernando Igor De Godoy<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/537502/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/537502/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/63848' target='_blank'>63848<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2001-09-30<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63848/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63848/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/63849' target='_blank'>63849<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2001-10-02<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63849/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63849/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-9.64,\"longitude\":-55.94,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/69017' target='_blank'>69017<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2004-05-19<br/><b>Country:<\\/b> Brazil<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Mato Grosso; Rio Teles Peres, near Rio Cristalino<\\/span><br/><b>User:<\\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/69017/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/69017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-10.5382,\"longitude\":-65.5928,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/74017' target='_blank'>74017<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2005-10-07<br/><b>Country:<\\/b> Bolivia<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cachuela Esperanza, Beni,  BO<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/74017/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/74017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.476,\"longitude\":-69.519,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/91507' target='_blank'>91507<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-11-17<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91507/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91507/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.476,\"longitude\":-69.519,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/91508' target='_blank'>91508<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-11-17<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91508/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91508/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-0.4714,\"longitude\":-76.4603,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/95003' target='_blank'>95003<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2009-07-06<br/><b>Country:<\\/b> Ecuador<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Sacha Lodge, Sucumbios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/95003/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/95003/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"}];\n\n  setUI(false);\n\n  var toggle = el.querySelector('#popup-toggle-' + uid);\n\n  if (toggle) {\n    toggle.onclick = function() {\n      if (!popupsVisible) {\n        showPopups();\n        popupsVisible = true;\n        setUI(true);\n      } else {\n        hidePopups();\n        popupsVisible = false;\n        setUI(false);\n      }\n    };\n  }\n\n  window.nextSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i + 1) % slides.length].style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n  window.prevSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i - 1 + slides.length) % slides.length]\n          .style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n}\n).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-fb2aa5e7cc01b220a1c5" style="width:100%;height:325px;"></div>
+<script type="application/json" data-for="htmlwidget-fb2aa5e7cc01b220a1c5">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,true,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addCircleMarkers","args":[[-11.8667,-3.4501,-11.8667,-11.8667,-9.640000000000001,-10.53816667,-11.476,-11.476,-0.4714,-12.8659,-3.2653,-3.6,-8.751200000000001],[-71.36669999999999,-72.8801,-71.36669999999999,-71.36669999999999,-55.94,-65.59283333,-69.51900000000001,-69.51900000000001,-76.4603,-71.367,-72.9295,-73.15000000000001,-68.99379999999999],7,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":1,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.8},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[-11.8667,-3.4501,-11.8667,-11.8667,-9.640000000000001,-10.53816667,-11.476,-11.476,-0.4714,-12.8659,-3.2653,-3.6,-8.751200000000001],[-71.36669999999999,-72.8801,-71.36669999999999,-71.36669999999999,-55.94,-65.59283333,-69.51900000000001,-69.51900000000001,-76.4603,-71.367,-72.9295,-73.15000000000001,-68.99379999999999],6,null,null,{"interactive":true,"className":"","stroke":true,"color":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"weight":3,"opacity":0.5,"fill":true,"fillColor":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"fillOpacity":0.3},null,null,["<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/11798' target='_blank'>11798<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2003-08-19<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu, Madre de Dios<\/span><br/><b>User:<\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/11798/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/11798/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/28108' target='_blank'>28108<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2008-12-30<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Explorama Lodge, Loreto<\/span><br/><b>User:<\/b> David Geale<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/28108/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/28108/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/63848' target='_blank'>63848<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2001-09-30<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63848/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63848/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/63849' target='_blank'>63849<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2001-10-02<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63849/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63849/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/69017' target='_blank'>69017<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2004-05-19<br/><b>Country:<\/b> Brazil<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Mato Grosso; Rio Teles Peres, near Rio Cristalino<\/span><br/><b>User:<\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/69017/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/69017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/74017' target='_blank'>74017<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2005-10-07<br/><b>Country:<\/b> Bolivia<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cachuela Esperanza, Beni,  BO<\/span><br/><b>User:<\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/74017/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/74017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/91507' target='_blank'>91507<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-11-17<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91507/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91507/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/91508' target='_blank'>91508<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-11-17<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91508/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91508/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/95003' target='_blank'>95003<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2009-07-06<br/><b>Country:<\/b> Ecuador<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Sacha Lodge, Sucumbios<\/span><br/><b>User:<\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/95003/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/95003/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/102622' target='_blank'>102622<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2011-07-27<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Amazonia Lodge<\/span><br/><b>User:<\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102622/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102622/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/102623' target='_blank'>102623<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2010-10-04<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>ExploNapo<\/span><br/><b>User:<\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102623/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102623/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/257794' target='_blank'>257794<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 1997<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Loreto: between Iquitos and mouth of Río Napo<\/span><br/><b>User:<\/b> John v. Moore<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/257794/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/257794/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/537502' target='_blank'>537502<\/a><br/><b>Species:<\/b> <i>Phaethornis hispidus<\/i><br/><b>Date:<\/b> 2017-06-21<br/><b>Country:<\/b> Brazil<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Purus River, Boca do Acre, State of Amazonas<\/span><br/><b>User:<\/b> Fernando Igor De Godoy<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/537502/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/537502/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-12.8659,-0.4714],"lng":[-76.4603,-55.94]}},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\nfunction(el, x) {\n\n  var map = this;\n  (function() {\n    if (typeof L.Control.Fullscreen === 'undefined') {\n      var cssUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css';\n      var jsUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js';\n      var link = document.createElement('link');\n      link.rel = 'stylesheet';\n      link.href = cssUrl;\n      document.head.appendChild(link);\n      var script = document.createElement('script');\n      script.src = jsUrl;\n      script.onload = function() {\n        map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n      };\n      document.head.appendChild(script);\n    } else {\n      map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n    }\n  })();\n\n  var popupsVisible = false;\n  var uid = 'map-' + Math.random().toString(36).substr(2, 9);\n\n  var control = L.control({position: 'topright'});\n\n  control.onAdd = function(map) {\n\n    var div = L.DomUtil.create(\n      'div',\n      'leaflet-bar leaflet-control'\n    );\n\n    div.innerHTML =\n      '<div id=\"popup-toggle-' + uid +\n      '\" style=\"display:flex;align-items:center;' +\n      'gap:6px;background:white;padding:6px 10px;' +\n      'border-radius:6px;box-shadow:0 1px 5px ' +\n      'rgba(0,0,0,0.3);font-size:12px;cursor:pointer;\">' +\n      '<span>Popups<\/span>' +\n      '<div id=\"toggle-switch-' + uid +\n      '\" style=\"width:34px;height:18px;' +\n      'background:#ccc;border-radius:9px;' +\n      'position:relative;\">' +\n      '<div id=\"toggle-knob-' + uid +\n      '\" style=\"width:14px;height:14px;' +\n      'background:white;border-radius:50%;' +\n      'position:absolute;top:2px;left:2px;\">' +\n      '<\/div><\/div><\/div>';\n\n    return div;\n  };\n\n  control.addTo(map);\n\n  function setUI(on) {\n    var knob = el.querySelector('#toggle-knob-' + uid);\n    var sw = el.querySelector('#toggle-switch-' + uid);\n    if (!knob || !sw) return;\n    knob.style.transition = '0.3s';\n    if (on) {\n      knob.style.left = '18px';\n      sw.style.background = '#4CAF50';\n    } else {\n      knob.style.left = '2px';\n      sw.style.background = '#ccc';\n    }\n  }\n\n  function showPopups() {\n    map._allPopups = [];\n    var sorted = popupData.slice().sort(function(a, b) {\n      return b.latitude - a.latitude;\n    });\n    sorted.forEach(function(d) {\n      if (!isNaN(d.longitude) && !isNaN(d.latitude)) {\n        var p = L.popup({autoClose:false, closeOnClick:false})\n          .setLatLng([d.latitude, d.longitude])\n          .setContent(d.popup)\n          .addTo(map);\n        map._allPopups.push(p);\n      }\n    });\n  }\n\n  function hidePopups() {\n    if (map._allPopups) {\n      map._allPopups.forEach(function(p) {\n        map.removeLayer(p);\n      });\n      map._allPopups = [];\n    }\n  }\n\n  var popupData = [{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/11798' target='_blank'>11798<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2003-08-19<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu, Madre de Dios<\\/span><br/><b>User:<\\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/11798/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/11798/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.4501,\"longitude\":-72.8801,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/28108' target='_blank'>28108<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2008-12-30<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Explorama Lodge, Loreto<\\/span><br/><b>User:<\\/b> David Geale<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/28108/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/28108/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/63848' target='_blank'>63848<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2001-09-30<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63848/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63848/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.8667,\"longitude\":-71.3667,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/63849' target='_blank'>63849<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2001-10-02<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cocha Cashu Biological Station, Manu National Park<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/63849/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/63849/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-9.64,\"longitude\":-55.94,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/69017' target='_blank'>69017<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2004-05-19<br/><b>Country:<\\/b> Brazil<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Mato Grosso; Rio Teles Peres, near Rio Cristalino<\\/span><br/><b>User:<\\/b> Frank Lambert<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/69017/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/69017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-10.5382,\"longitude\":-65.5928,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/74017' target='_blank'>74017<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2005-10-07<br/><b>Country:<\\/b> Bolivia<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cachuela Esperanza, Beni,  BO<\\/span><br/><b>User:<\\/b> Joseph Tobias and Nathalie Seddon<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/74017/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/74017/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.476,\"longitude\":-69.519,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/91507' target='_blank'>91507<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-11-17<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91507/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91507/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-11.476,\"longitude\":-69.519,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/91508' target='_blank'>91508<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-11-17<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Portillo, S of Iberia, Madre de Dios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/91508/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/91508/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-0.4714,\"longitude\":-76.4603,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/95003' target='_blank'>95003<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2009-07-06<br/><b>Country:<\\/b> Ecuador<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Sacha Lodge, Sucumbios<\\/span><br/><b>User:<\\/b> Daniel Lane<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/95003/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/95003/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-12.8659,\"longitude\":-71.367,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/102622' target='_blank'>102622<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2011-07-27<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Amazonia Lodge<\\/span><br/><b>User:<\\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102622/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102622/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.2653,\"longitude\":-72.9295,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/102623' target='_blank'>102623<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2010-10-04<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>ExploNapo<\\/span><br/><b>User:<\\/b> Fabrice Schmitt<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/102623/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/102623/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-3.6,\"longitude\":-73.15,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/257794' target='_blank'>257794<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 1997<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Loreto: between Iquitos and mouth of Río Napo<\\/span><br/><b>User:<\\/b> John v. Moore<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/257794/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/257794/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-8.7512,\"longitude\":-68.9938,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/537502' target='_blank'>537502<\\/a><br/><b>Species:<\\/b> <i>Phaethornis hispidus<\\/i><br/><b>Date:<\\/b> 2017-06-21<br/><b>Country:<\\/b> Brazil<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Purus River, Boca do Acre, State of Amazonas<\\/span><br/><b>User:<\\/b> Fernando Igor De Godoy<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/537502/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/537502/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"}];\n\n  setUI(false);\n\n  var toggle = el.querySelector('#popup-toggle-' + uid);\n\n  if (toggle) {\n    toggle.onclick = function() {\n      if (!popupsVisible) {\n        showPopups();\n        popupsVisible = true;\n        setUI(true);\n      } else {\n        hidePopups();\n        popupsVisible = false;\n        setUI(false);\n      }\n    };\n  }\n\n  window.nextSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i + 1) % slides.length].style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n  window.prevSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i - 1 + slides.length) % slides.length]\n          .style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n}\n).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
 </div>
 </div>
 <p>Once you feel fine with the subset of data you can go ahead and download it as follows:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download_media</span>(<span class="at">metadata =</span> song_phae_his, </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="st">"DIRECTORY WHERE YOU WANT TO SAVE THE FILES"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download_media</span>(<span class="at">metadata =</span> song_phae_his, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="st">"DIRECTORY WHERE YOU WANT TO SAVE THE FILES"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>You can also download recordings from other taxonomic groups. Take a look at <a href="https://xeno-canto.org/explore/taxonomy">this link</a> for a list of species by taxonomic group.</p>
@@ -341,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.5.2 (2025-10-31)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 22.04.5 LTS
+Running under: Ubuntu 22.04.4 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
@@ -365,13 +377,12 @@ other attached packages:
 [1] suwo_0.2.2
 
 loaded via a namespace (and not attached):
- [1] backports_1.5.1   digest_0.6.39     R6_2.6.1          lubridate_1.9.5  
- [5] fastmap_1.2.0     xfun_0.57         magrittr_2.0.5    glue_1.8.1       
- [9] parallel_4.5.2    knitr_1.51        htmltools_0.5.9   timechange_0.4.0 
-[13] generics_0.1.4    rmarkdown_2.31    cli_3.6.6         jquerylib_0.1.4  
-[17] compiler_4.5.2    rstudioapi_0.17.1 tools_4.5.2       checkmate_2.3.4  
-[21] evaluate_1.0.5    leaflet_2.2.3     yaml_2.3.12       otel_0.2.0       
-[25] rlang_1.2.0       jsonlite_2.0.0    htmlwidgets_1.6.4 crosstalk_1.2.2  </code></pre>
+ [1] backports_1.5.1   digest_0.6.39     R6_2.6.1          fastmap_1.2.0    
+ [5] xfun_0.62         magrittr_2.0.5    knitr_1.52        htmltools_0.5.9  
+ [9] rmarkdown_2.32    cli_3.6.6         jquerylib_0.1.4   compiler_4.5.2   
+[13] rstudioapi_0.18.0 tools_4.5.2       checkmate_2.3.4   evaluate_1.0.5   
+[17] leaflet_2.2.3     yaml_2.3.12       otel_0.2.0        rlang_1.3.0      
+[21] jsonlite_2.0.0    htmlwidgets_1.6.4 crosstalk_1.2.2  </code></pre>
 </div>
 </div>
 
@@ -380,43 +391,58 @@ loaded via a namespace (and not attached):
 
 </font></main><font size="4"> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
       }
+      return false;
     }
-    return false;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
       for (const childEl of codeEl.children) {
         if (isCodeAnnotation(childEl)) {
           childEl.remove();
@@ -424,180 +450,189 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
       return codeEl.innerText;
     }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/marce10\.github\.io\/ESA_BIR_2026\/");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-          if (link.getAttribute("rel") === null) {
-            link.setAttribute("rel", "noopener");
-          }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
-    };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
     });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/marce10\.github\.io\/PRSTATS_BIR_2026\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
         }
-        return container.innerHTML
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -605,185 +640,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 </font></div><font size="4"> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
