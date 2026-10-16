@@ -946,7 +946,7 @@ Reference manuals are collections of documentation for all the functions of a pa
 
 -   [dynaSpec manual](https://cloud.r-project.org/web/packages/dynaSpec/dynaSpec.pdf)
 
--   [baRulho manual](https://cran.r-project.org/web/packages/baRulho/baRulho.pdf)  
+-   [ohun manual](https://cran.r-project.org/web/packages/ohun/ohun.pdf)
 
 ## Documentation of functions
 

@@ -108,14 +108,13 @@ invisible(lapply(package_names, library, character.only = TRUE))
 
 ### R packages {.unnumbered .unlisted}
 
-1)  The following R packages will be used in a couple of instances during the course, including development versions (from github) of baRulho, dynaSpec and PhenotypeSpace:
+1)  The following R packages will be used in a couple of instances during the course, including development versions (from github) of dynaSpec and PhenotypeSpace:
 
 ```{r}
 
 # packages to install (CRAN packages by name, GitHub packages as "user/repo")
 packages <- c(
   "ggheatmap",
-  "maRce10/baRulho",
   "maRce10/dynaSpec",
   "maRce10/PhenotypeSpace")
 
