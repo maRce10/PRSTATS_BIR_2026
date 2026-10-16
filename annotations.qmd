@@ -237,7 +237,7 @@ This is a simple function to re-label the columns to match the format of the sel
 
 ```{r, eval = F, echo = T}
 
-# para simplificar solo las primeras 7 columnas
+# to simplify the example select a subset of the columns
 st1 <- rvn.dat[ ,1:7]
 
 st1
