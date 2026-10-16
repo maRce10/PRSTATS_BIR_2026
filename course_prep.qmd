@@ -78,6 +78,8 @@ load_packages(packages = c(
 
 11) Install Raven lite from [http://ravensoundsoftware.com/raven-pricing/](http://ravensoundsoftware.com/raven-pricing/) (scroll down to "Raven Lite 2.0" and click on "Order Free Raven Lite 2.0 License"). Ignore if you have any Raven version already installed.
 
+12) Register for a free Xeno-Canto account and API key at [xeno-canto.org/account](https://xeno-canto.org/account). This is required to query recordings from Xeno-Canto during the course (used with the `suwo` package).
+
 
 ## Non-critical software (not needed for most of the course) {.unnumbered .unlisted}
 

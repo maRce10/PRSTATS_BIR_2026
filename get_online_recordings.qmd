@@ -17,13 +17,17 @@ date: "`r Sys.Date()`"
 
 The suwo package offers several functions to query and download recordings (and other media) of animal vocalizations in online repositories. For instance, the following code return recordings metadata from Xeno-Canto:
 
+::: {.alert .alert-warning}
+Xeno-Canto's API requires a personal API key. Register for a free account at [xeno-canto.org/account](https://xeno-canto.org/account) to get one, then set it as shown below before querying.
+:::
+
 Example on how to get recording's metadata (no downloading):
 
 ```{r, message=FALSE,  warning=FALSE}
 
 library(suwo)
 
-# Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")
+Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")
 phae_his <- query_xenocanto('Phaethornis hispidus', all_data = TRUE)
 
 ```
