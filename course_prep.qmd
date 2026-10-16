@@ -17,7 +17,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ## Critical software {.unnumbered .unlisted}
 
 
-1)  Install or update R on the computer you will use during the course (<https://cran.r-project.org>). I assume that you already have it installed, but try to update it if you have a R version \< 4.0.0. You can find which R version you have by running this in the R console:
+1)  Install or update R on the computer you will use during the course (<https://cran.r-project.org>). I assume that you already have it installed, but try to update it if you have an R version \< 4.0.0. You can find which R version you have by running this in the R console:
 
 ```{r}
 
@@ -38,13 +38,13 @@ update.packages(ask = FALSE)
 
 5)  Open RStudio and select the tab "Tools" then "Global Options" (last option). Select the "Code" option, then select the box for "Soft-wrap R source files".
 
-6)  Also in Rstudio: Select the "Pane Layout" option and move "Source" to the top left pane and "Console" to the top right pane. For those of you unfamiliar with RStudio, the source is your script, where you save code in a physical file (usually .R script) and the console prints the output of the code you run from the source. You can write code in the console, but it will not be saved in a physical file. This layout allocates more screen space to the most useful panes. Hit "Apply" and "Ok".
+6)  Also in Rstudio: Select the "Pane Layout" option and move "Source" to the top left pane and "Console" to the top right pane. For those of you unfamiliar with RStudio, the source is your script, where you save code in a physical file (usually .R script) and the console prints the output of the code you run from the source. You can write code in the console, but it will not be saved in a physical file. This layout allocates more screen space to the most useful panes. Hit "Apply" and "OK".
 
 7)  Also in Rstudio: Go back up to the "File" tab and select "New Project", then select the "BIOACOUSTICS_R_2026" directory.
 
-8) Download [this folder](https://www.dropbox.com/scl/fo/mooazn5xd6zxmyy9y1skd/AGuTnwjq2Lr6668s4XbKSWA?rlkey=unqwf7war0458be63n7ltyzaf&st=80d90tn8&dl=0) within the Rstudio project directory. Make sure is saved as a subfolder called "examples"
+8) Download [this folder](https://www.dropbox.com/scl/fo/mooazn5xd6zxmyy9y1skd/AGuTnwjq2Lr6668s4XbKSWA?rlkey=unqwf7war0458be63n7ltyzaf&st=80d90tn8&dl=0) within the Rstudio project directory. Make sure it is saved as a subfolder called "examples"
 
-9)  Now in the R console in Rstudio: Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven and ohun (remove the packages first if you have them installed already).
+9)  Now in the R console in Rstudio: Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven, ohun and suwo (remove the packages first if you have them installed already).
 
 ```{r}
 
@@ -83,7 +83,7 @@ load_packages(packages = c(
 
 ## Non-critical software (not needed for most of the course) {.unnumbered .unlisted}
 
-1) The following R packages will be used in a couple of instances during the course (development versions from github): 
+1) The following R packages will be used in a couple of instances during the course, including development versions (from github) of baRulho, dynaSpec and PhenotypeSpace:
 
 ```{r}
 
@@ -130,9 +130,9 @@ Note that you can also run the code using google colab. Take a look at this note
 
 -   Set aside a physical space, hopefully as isolated as possible from external stimuli
 -   Use headphones/earphones to avoid any interference from echoes or external noises
--   Ideally, read the materials ahead of time (I know! it's time comsuming)
+-   Ideally, read the materials ahead of time (I know! it's time consuming)
 -   Make sure you have anything you need before the start of the class
 -   Be ready a few minutes before the start of the class
--   Try to focus as much as possible in the course, close other programs or unnecessary internet browser tabs (i.e. instagram, twitter, etc). This will also make the computer more efficient (less likely to get slow)
+-   Try to focus as much as possible in the course, close other programs or unnecessary internet browser tabs (e.g. Instagram, Twitter, etc). This will also make the computer more efficient (less likely to get slow)
 -   Comment your code
 :::
