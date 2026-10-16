@@ -49,19 +49,21 @@ update.packages(ask = FALSE)
 
 ### R packages {.unnumbered .unlisted}
 
-1)  Now in the R console in Rstudio: Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven, ohun and suwo (remove the packages first if you have them installed already).
+1)  Now in the R console in Rstudio: install 'pak', the package manager we will use to install packages for the rest of the course:
 
 ```{r}
 
-# package to install other packages from github
-if (!requireNamespace("sketchy"))
-  install.packages("sketchy")
+if (!requireNamespace("pak", quietly = TRUE))
+  install.packages("pak")
 
-# load package
-library(sketchy)
+```
 
-# install/load packages
-load_packages(packages = c(
+2)  Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven, ohun and suwo (remove the packages first if you have them installed already).
+
+```{r}
+
+# packages to install (CRAN packages by name, GitHub packages as "user/repo")
+packages <- c(
   "pracma",
   "Sim.DiffProc",
   "bioacoustics",
@@ -69,11 +71,19 @@ load_packages(packages = c(
   "soundgen",
   "audio",
   "ggheatmap",
-  github = "maRce10/warbleR",
-  github = "maRce10/Rraven",
-  github = "maRce10/ohun",
-  github = "maRce10/suwo")
-)
+  "maRce10/warbleR",
+  "maRce10/Rraven",
+  "maRce10/ohun",
+  "maRce10/suwo")
+
+package_names <- sub(".*[/:]", "", sub("@.*$", "", packages))
+
+# install missing packages
+missing <- !vapply(package_names, requireNamespace, logical(1), quietly = TRUE)
+if (any(missing)) pak::pkg_install(packages[missing])
+
+# load packages
+invisible(lapply(package_names, library, character.only = TRUE))
 
 ```
 
@@ -97,14 +107,21 @@ load_packages(packages = c(
 
 ```{r}
 
-# install/load packages
-load_packages(packages = c(
+# packages to install (CRAN packages by name, GitHub packages as "user/repo")
+packages <- c(
   "ggheatmap",
-  github = "maRce10/baRulho",
-  github = "maRce10/dynaSpec",
-  github = "maRce10/PhenotypeSpace"
- )
-)
+  "maRce10/baRulho",
+  "maRce10/dynaSpec",
+  "maRce10/PhenotypeSpace")
+
+package_names <- sub(".*[/:]", "", sub("@.*$", "", packages))
+
+# install missing packages
+missing <- !vapply(package_names, requireNamespace, logical(1), quietly = TRUE)
+if (any(missing)) pak::pkg_install(packages[missing])
+
+# load packages
+invisible(lapply(package_names, library, character.only = TRUE))
 
 ```
 
