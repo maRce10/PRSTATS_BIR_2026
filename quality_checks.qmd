@@ -465,7 +465,7 @@ Catalogs allow you to inspect selections of many recordings in the same image an
 ```{r, eval = FALSE}
 
 # read bat inquiry data
-inq <- readRDS(file = "ext_sel_tab_inquiry.RDS")
+inq <- readRDS(file = "./examples/iniquiry_calls.RDS")
 
 catalog(X = inq[1:100, ], flim = c(10, 50), nrow = 10, ncol = 10, 
         same.time.scale = T, mar = 0.01, gr = FALSE, img.suffix = "inquiry",
