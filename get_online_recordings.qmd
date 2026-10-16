@@ -1,0 +1,67 @@
+---
+date: "`r Sys.Date()`"
+---
+
+ 
+
+::: {.alert .alert-info}
+## **Objective** {.unnumbered .unlisted}
+
+-   Demonstrate how to obtain acoustic data from online repositories
+:::
+
+
+<font size="4">
+
+## Getting recordings from online repositories
+
+The suwo package offers several functions to query and download recordings (and other media) of animal vocalizations in online repositories. For instance, the following code return recordings metadata from Xeno-Canto:
+
+Example on how to get recording's metadata (no downloading):
+
+```{r, message=FALSE,  warning=FALSE}
+
+library(suwo)
+
+# Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")
+phae_his <- query_xenocanto('Phaethornis hispidus', all_data = TRUE)
+
+```
+
+Keep only song vocalizations:
+
+```{r}
+
+song_phae_his <- phae_his[grep("song", ignore.case = TRUE, phae_his$vocalization_type), ]
+
+```
+
+Map locations using `map_locations()`:
+
+```{r, fig.width=10, echo=TRUE}
+
+map_locations(song_phae_his)
+
+```
+
+Once you feel fine with the subset of data you can go ahead and download it as follows:
+
+```{r, eval = FALSE, fig.width=10}
+
+download_media(metadata = song_phae_his, 
+         path = "DIRECTORY WHERE YOU WANT TO SAVE THE FILES")
+
+```
+
+You can also download recordings from other taxonomic groups. Take a look at [this link](https://xeno-canto.org/explore/taxonomy) for a list of species by taxonomic group.
+ 
+
+------------------------------------------------------------------------
+
+<font size="4">Session information</font>
+
+```{r session info, echo=F}
+
+sessionInfo()
+
+```
