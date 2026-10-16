@@ -15,7 +15,6 @@ library(warbleR)
 library(kableExtra)
 library(viridis)
 library(ggplot2)
-library(ggalign)
 library(PhenotypeSpace)
 library(Rraven)
 
@@ -58,7 +57,6 @@ We will use the example data `lbh_selec_table` that comes with the package. This
 library(warbleR)
 library(viridis)
 library(ggplot2)
-library(ggalign)
 library(PhenotypeSpace)
 
 warbleR_options(
