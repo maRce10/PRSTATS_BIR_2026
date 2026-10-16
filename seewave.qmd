@@ -40,7 +40,7 @@ We can see the description of the package **seewave** in this way:
 
 ```{r, echo=TRUE}
 
-# cargar ejemplos
+# load examples
 data(tico)
 
 data(orni)
@@ -240,9 +240,9 @@ The output is a list with the following elements:
 
 -   **s**: duration of detected signals (in s)
 -   **p**: duration of pauses (i.e. gaps) between signals
--   **r**: ratio of **s** to **r**
+-   **r**: ratio of **s** to **p**
 -   **s.start**: start of signals
--   **end**: end of signals
+-   **s.end**: end of signals
 
  
 
