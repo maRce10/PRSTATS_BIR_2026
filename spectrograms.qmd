@@ -21,7 +21,7 @@ opts_chunk$set(tidy = TRUE, warning = FALSE, message = FALSE)
 
 # custom spectrogram function
 .specPlot <- function(wave, frq.lim, wl, ovlp, wn, main, ...) {
-    fspec <- spectro(wave = clip, wl = wl, ovlp = ovlp, 
+    fspec <- spectro(wave = wave, wl = wl, ovlp = ovlp,
                      wn = wn, plot = FALSE)
     t.bins <- fspec$time
     n.t.bins <- length(t.bins)
@@ -36,8 +36,8 @@ opts_chunk$set(tidy = TRUE, warning = FALSE, message = FALSE)
     # }
     t.step <- t.bins[2] - t.bins[1]
     frq.step <- frq.bins[2] - frq.bins[1]
-      image(x = which.t.bins, y = which.frq.bins, t(amp), 
-            col = spec.col, xlab = "Time", ylab = "Frequency (kHz)", 
+      image(x = which.t.bins, y = which.frq.bins, t(amp),
+            col = spectro.colors(30), xlab = "Time", ylab = "Frequency (kHz)",
             las = 1, useRaster = TRUE, axes = FALSE, las = 1, 
             main = NULL)
       box()
@@ -45,7 +45,7 @@ opts_chunk$set(tidy = TRUE, warning = FALSE, message = FALSE)
       axis(2, at = frq.bin.ticks/frq.step, labels = frq.bin.ticks, 
            las = 1)
      t.bin.ticks <- pretty(seq(par("usr")[1], par("usr")[2], 10), n = 4) 
-      axis(1, at = t.bin.ticks, labels = round(t.bin.ticks * duration(clip) / par("usr")[2], 2))
+      axis(1, at = t.bin.ticks, labels = round(t.bin.ticks * duration(wave) / par("usr")[2], 2))
 
 }
 
@@ -144,7 +144,7 @@ knitr::include_graphics("images/FFT_decomp.png")
 
 ```
 
-<font size="1"><b>Tomado de Sueur 2018</b></font>
+<font size="1"><b>Taken from Sueur 2018</b></font>
 
 The periodogram next to the spectrogram of these simulated sounds looks like this:
 
