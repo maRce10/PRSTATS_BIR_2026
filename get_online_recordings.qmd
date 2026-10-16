@@ -1,4 +1,5 @@
 ---
+title: <font size="7"><b>Get recordings from online repositories</b></font>
 date: "`r Sys.Date()`"
 ---
 
@@ -17,20 +18,35 @@ date: "`r Sys.Date()`"
 
 The suwo package offers several functions to query and download recordings (and other media) of animal vocalizations in online repositories. For instance, the following code return recordings metadata from Xeno-Canto:
 
+This tutorial focuses on Xeno-Canto, but suwo can also query iNaturalist, GBIF, Macaulay Library and WikiAves. See the [suwo vignette](https://docs.ropensci.org/suwo/articles/suwo.html) for an overview of all the available query functions and repositories.
+
 ::: {.alert .alert-warning}
 Xeno-Canto's API requires a personal API key. Register for a free account at [xeno-canto.org/account](https://xeno-canto.org/account) to get one, then set it as shown below before querying.
 :::
 
 Example on how to get recording's metadata (no downloading):
 
-```{r, message=FALSE,  warning=FALSE}
+```{r, eval = FALSE, message=FALSE,  warning=FALSE}
 
 library(suwo)
+
+# get cookies for WikiAves (only needs to be done once per session)
+access_wikiaves()
 
 Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")
 phae_his <- query_xenocanto('Phaethornis hispidus', all_data = TRUE)
 
 ```
+
+```{r, eval = TRUE, echo = FALSE}
+
+# write.csv(phae_his, "./data/phae_his_wikiaves.csv", row.names = FALSE)
+library(suwo)
+
+phae_his <- read.csv("./data/phae_his_wikiaves.csv")
+
+```
+
 
 Keep only song vocalizations:
 
