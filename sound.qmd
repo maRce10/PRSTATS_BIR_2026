@@ -517,7 +517,7 @@ str(s4)
 
  
 
-The `frequency()` and `deltat()` functions return the sampling frequency ($f$) and the time resolution ($Delta t$) respectively:
+The `frequency()` and `deltat()` functions return the sampling frequency ($f$) and the time resolution ($\Delta t$) respectively:
 
 ```{r, eval = TRUE}
 
@@ -845,7 +845,7 @@ wav2flac(file = "./examples/Phae.long1.wav", overwrite = FALSE)
 
  
 
-To compress a `.wav` file to a `.flac` format, the argument `reverse = TRUE` must be used:
+To convert a `.flac` file back to `.wav` format, the argument `reverse = TRUE` must be used:
 
 ```{r, eval = FALSE}
 
