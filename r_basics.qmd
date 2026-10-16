@@ -76,14 +76,14 @@ flowchart LR
     D --> D2(2 dimensions)
     D --> DN(N dimensions)
     R --> F(Functions)
-    
+
     D1 --> V(Vector)
     D1 --> L(List)
     D2 --> M(Matrix)
     D2 --> DF(Data Frame)
     DN --> AR(Array)
 
-    F --> BF(Integraded functions)
+    F --> BF(Integrated functions)
     BF --> BA(Basic functions)
     BF --> OP(Operators)
     F --> PF(Packages)
@@ -428,7 +428,7 @@ Some functions come by default with R basic. New functions can be loaded as part
 flowchart LR
     classDef largeText font-size:18px, padding:15px;
 
-    F(Functions) --> BF(Integraded functions)
+    F(Functions) --> BF(Integrated functions)
     BF --> OP(Operators)
     BF --> BA(Basic functions)
     F --> PF(Packages)
@@ -807,7 +807,7 @@ View(df)
 
 -   Now create a subset of data containing the observations of both `setosa` and `versicolor`.
 
--   Also with `iris` create a subset of data with the observations for which `iris$Sepal.length` is greater than 6
+-   Also with `iris` create a subset of data with the observations for which `iris$Sepal.Length` is greater than 6
 
 -   How many observations have a sepal length greater than 6?
 :::
@@ -986,7 +986,7 @@ vgn <- browseVignettes()
 vignette()
 ```
 
-También deberían aparecer en la página del paquete en CRAN.
+They should also appear on the package's page on CRAN.
 
 ::: {.alert .alert-info}
 ## Exercise 4
