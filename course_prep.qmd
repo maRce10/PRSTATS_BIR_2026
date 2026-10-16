@@ -6,7 +6,7 @@ format:
     code-fold: false
 ---
 
- 
+
 
 ```{r, echo= FALSE}
 
@@ -16,6 +16,7 @@ knitr::opts_chunk$set(eval = FALSE)
 
 ## Critical software {.unnumbered .unlisted}
 
+### R and RStudio setup {.unnumbered .unlisted}
 
 1)  Install or update R on the computer you will use during the course (<https://cran.r-project.org>). I assume that you already have it installed, but try to update it if you have an R version \< 4.0.0. You can find which R version you have by running this in the R console:
 
@@ -42,15 +43,19 @@ update.packages(ask = FALSE)
 
 7)  Also in Rstudio: Go back up to the "File" tab and select "New Project", then select the "BIOACOUSTICS_R_2026" directory.
 
-8) Download [this folder](https://www.dropbox.com/scl/fo/mooazn5xd6zxmyy9y1skd/AGuTnwjq2Lr6668s4XbKSWA?rlkey=unqwf7war0458be63n7ltyzaf&st=80d90tn8&dl=0) within the Rstudio project directory. Make sure it is saved as a subfolder called "examples"
+### Project folder and example data {.unnumbered .unlisted}
 
-9)  Now in the R console in Rstudio: Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven, ohun and suwo (remove the packages first if you have them installed already).
+1)  Download [this folder](https://www.dropbox.com/scl/fo/mooazn5xd6zxmyy9y1skd/AGuTnwjq2Lr6668s4XbKSWA?rlkey=unqwf7war0458be63n7ltyzaf&st=80d90tn8&dl=0) within the Rstudio project directory. Make sure it is saved as a subfolder called "examples"
+
+### R packages {.unnumbered .unlisted}
+
+1)  Now in the R console in Rstudio: Run the following code to install packages. This includes the latest developmental versions (from github) of warbleR, Rraven, ohun and suwo (remove the packages first if you have them installed already).
 
 ```{r}
 
 # package to install other packages from github
 if (!requireNamespace("sketchy"))
-  install.packages("sketchy") 
+  install.packages("sketchy")
 
 # load package
 library(sketchy)
@@ -74,16 +79,21 @@ load_packages(packages = c(
 
 *if you have any issue installing 'bioacoustics' take a look at this fix: <https://stackoverflow.com/questions/53092646/unable-to-install-warbler-package-using-mac-os>*
 
-10) warbleR depends heavily on the R package seewave. Seewave may require some extra steps to get installed. Take a look at seewave's website for further help: [http://rug.mnhn.fr/seewave](http://rug.mnhn.fr/seewave/) (and then go to "installation" and scroll down)
+### External software {.unnumbered .unlisted}
 
-11) Install Raven lite from [http://ravensoundsoftware.com/raven-pricing/](http://ravensoundsoftware.com/raven-pricing/) (scroll down to "Raven Lite 2.0" and click on "Order Free Raven Lite 2.0 License"). Ignore if you have any Raven version already installed.
+1)  warbleR depends heavily on the R package seewave. Seewave may require some extra steps to get installed. Take a look at seewave's website for further help: [http://rug.mnhn.fr/seewave](http://rug.mnhn.fr/seewave/) (and then go to "installation" and scroll down)
 
-12) Register for a free Xeno-Canto account and API key at [xeno-canto.org/account](https://xeno-canto.org/account). This is required to query recordings from Xeno-Canto during the course (used with the `suwo` package).
+2)  Install Raven lite from [http://ravensoundsoftware.com/raven-pricing/](http://ravensoundsoftware.com/raven-pricing/) (scroll down to "Raven Lite 2.0" and click on "Order Free Raven Lite 2.0 License"). Ignore if you have any Raven version already installed.
 
+### Accounts and API keys {.unnumbered .unlisted}
+
+1)  Register for a free Xeno-Canto account and API key at [xeno-canto.org/account](https://xeno-canto.org/account). This is required to query recordings from Xeno-Canto during the course (used with the `suwo` package).
 
 ## Non-critical software (not needed for most of the course) {.unnumbered .unlisted}
 
-1) The following R packages will be used in a couple of instances during the course, including development versions (from github) of baRulho, dynaSpec and PhenotypeSpace:
+### R packages {.unnumbered .unlisted}
+
+1)  The following R packages will be used in a couple of instances during the course, including development versions (from github) of baRulho, dynaSpec and PhenotypeSpace:
 
 ```{r}
 
@@ -98,7 +108,9 @@ load_packages(packages = c(
 
 ```
 
-2) Install ffmpeg (only needed for dynaSpec package):
+### External software {.unnumbered .unlisted}
+
+1)  Install ffmpeg (only needed for dynaSpec package):
 
 <https://ffmpeg.org/download.html>
 
@@ -106,24 +118,25 @@ take a look at this link if you have issues installing ffmpeg on windows:
 
 <https://github.com/maRce10/dynaSpec/issues/3>
 
-3) Install Audacity (you can use Adobe Audition instead):
+2)  Install Audacity (you can use Adobe Audition instead):
 
 <https://www.audacityteam.org/download/>
 
-4) Install SOX. It can be downloaded from here: 
+3)  Install SOX. It can be downloaded from here:
 
 [http://sox.sourceforge.net](http://sox.sourceforge.net/)
 
-5) Install FLAC. It can be downloaded from here: 
+4)  Install FLAC. It can be downloaded from here:
 
 [https://xiph.org/flac/download.html](https://xiph.org/flac/download.html)
 
+### Alternative: run in the cloud {.unnumbered .unlisted}
 
 Note that you can also run the code using google colab. Take a look at this notebook:
 
 [https://colab.research.google.com/](https://colab.research.google.com/drive/13Hb4sdvg6FgQi0pF1Z-Y2UrirVPpNJjb?usp=sharing)
 
- 
+
 
 ::: {.alert .alert-warning}
 **A few tips to make sure you will take full advantage of the course**:
