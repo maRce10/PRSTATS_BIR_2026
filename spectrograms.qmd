@@ -660,7 +660,7 @@ scrolling_spectro(
 )
 ```
 
-<iframe width="100%" src="images/nightingale_wren.mp4" allowtransparency="false" style="background: #FFFFFF;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+<iframe width="100%" height="500" src="images/nightingale_wren.mp4" allowtransparency="false" style="background: #FFFFFF;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
 
 </iframe>
 
