@@ -70,7 +70,7 @@ packages <- c(
   "phonTools",
   "soundgen",
   "audio",
-  "ggheatmap",
+  "XiaoLuo-boy/ggheatmap",
   "psych",
   "ggplot2",
   "microbenchmark",
@@ -78,8 +78,8 @@ packages <- c(
   "viridis",
   "maRce10/warbleR",
   "maRce10/Rraven",
-  "maRce10/ohun",
-  "maRce10/suwo")
+  "ropensci/ohun",
+  "ropensci/suwo")
 
 package_names <- sub(".*[/:]", "", sub("@.*$", "", packages))
 
