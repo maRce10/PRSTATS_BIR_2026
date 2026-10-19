@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2026-10-16">
+<meta name="dcterms.date" content="2026-10-19">
 
 <title>Case study – Bioacoustic analysis in R 2026</title>
 <style>
@@ -106,6 +106,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<link href="site_libs/leaflet-minimap-3.3.1/Control.MiniMap.min.css" rel="stylesheet">
+<script src="site_libs/leaflet-minimap-3.3.1/Control.MiniMap.min.js"></script>
+<script src="site_libs/leaflet-minimap-3.3.1/Minimap-binding.js"></script>
 
 
 <link rel="stylesheet" href="styles.css">
@@ -274,7 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 16, 2026</p>
+      <p class="date">October 19, 2026</p>
     </div>
   </div>
   
@@ -300,39 +313,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(warbleR)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suwo)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pg <span class="ot">&lt;-</span> <span class="fu">query_xc</span>(<span class="at">qword =</span> <span class="st">'Phaethornis guy'</span>, <span class="at">download =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># get cookies for WikiAves (only needs to be done once per session)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">access_wikiaves</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">xc_api_key =</span> <span class="st">"YOUR_API_KEY_HERE"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>phae_guy <span class="ot">&lt;-</span> <span class="fu">query_xenocanto</span>(<span class="st">'Phaethornis guy'</span>, <span class="at">all_data =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>&nbsp;</p>
 <p>Keep only song vocalizations of high quality:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> pg[<span class="fu">grepl</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, pg<span class="sc">$</span>Vocalization_type) <span class="sc">&amp;</span> pg<span class="sc">$</span>Quality <span class="sc">==</span> <span class="st">"A"</span>, ]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> phae_guy[<span class="fu">grepl</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, phae_guy<span class="sc">$</span>vocalization_type) <span class="sc">&amp;</span> phae_guy<span class="sc">$</span>quality <span class="sc">==</span> <span class="st">"A"</span>, ]</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 1 site from Colombia to have a few samples per country</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> song_pg[song_pg<span class="sc">$</span>Locality <span class="sc">!=</span> <span class="st">"Suaita, Santander"</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> song_phae_guy[song_phae_guy<span class="sc">$</span>locality <span class="sc">!=</span> <span class="st">"Suaita, Santander"</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>&nbsp;</p>
 <p>Map locations using <a href="https://marce10.github.io/warbleR/reference/map_xc.html"><code>map_xc()</code></a>:</p>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_xc</span>(song_pg, <span class="at">leaflet.map =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_locations</span>(song_phae_guy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<pre><code>Warning in map_xc(song_pg, leaflet.map = TRUE): map_xc() has been deprecated.
-Use `map_locations()` from the package suwo instead
-(https://docs.ropensci.org/suwo/)</code></pre>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-a47c75d87c28502d1bcb" style="width:100%;height:361px;"></div>
+<script type="application/json" data-for="htmlwidget-a47c75d87c28502d1bcb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMiniMap","args":[null,null,"bottomright",150,150,19,19,-5,false,false,false,true,false,false,{"color":"#ff7800","weight":1,"clickable":false},{"color":"#000000","weight":1,"clickable":false,"opacity":0,"fillOpacity":0},{"hideText":"Hide MiniMap","showText":"Show MiniMap"},[]]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addCircleMarkers","args":[[-5.6708,7.998,-4.108,9.8279,9.8279,-0.537,-4.1146],[-77.6953,-77.71380000000001,-78.964,-83.7719,-83.7719,-77.425,-78.9648],7,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":1,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.8},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[-5.6708,7.998,-4.108,9.8279,9.8279,-0.537,-4.1146],[-77.6953,-77.71380000000001,-78.964,-83.7719,-83.7719,-77.425,-78.9648],6,null,null,{"interactive":true,"className":"","stroke":true,"color":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"weight":3,"opacity":0.5,"fill":true,"fillColor":["#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8","#007FA8"],"fillOpacity":0.3},null,null,["<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/227574' target='_blank'>227574<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2008-01-04<br/><b>Country:<\/b> Peru<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Abra Patricia road, San Martín<\/span><br/><b>User:<\/b> Peter Boesman<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/227574/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/227574/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/359439' target='_blank'>359439<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2016-12-15<br/><b>Country:<\/b> Panama<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Cerro Pirre (middle)<\/span><br/><b>User:<\/b> Hans Matheve<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/359439/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/359439/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/948986' target='_blank'>948986<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2024-11-06<br/><b>Country:<\/b> Ecuador<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Zamora-Chinchipe: Río Bombuscaro<\/span><br/><b>User:<\/b> Gabriel Leite<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/948986/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/948986/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/956687' target='_blank'>956687<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2024-07-09<br/><b>Country:<\/b> Costa Rica<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Hotel Quelitales, Cartago<\/span><br/><b>User:<\/b> Scott Olmstead<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/956687/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/956687/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/956688' target='_blank'>956688<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2024-07-09<br/><b>Country:<\/b> Costa Rica<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Hotel Quelitales, Cartago<\/span><br/><b>User:<\/b> Scott Olmstead<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/956688/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/956688/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/1094105' target='_blank'>1094105<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2025-02-07<br/><b>Country:<\/b> Ecuador<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Rio Bigal Reserve, Orellana<\/span><br/><b>User:<\/b> Marc Anderson<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/1094105/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/1094105/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>","<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\/b> Xeno-Canto<br/><b>Observation:<\/b> <a href='https://xeno-canto.org/1173344' target='_blank'>1173344<\/a><br/><b>Species:<\/b> <i>Phaethornis guy<\/i><br/><b>Date:<\/b> 2024-09-26<br/><b>Country:<\/b> Ecuador<br/><b>Locality:<\/b> <span style='overflow-wrap:break-word;'>Parque Nacional Podocarpus, Bombuscaro, Zamora Chinchipe<\/span><br/><b>User:<\/b> Juan Freile<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/1173344/download'><\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/1173344/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\/a><\/div><\/div><\/div><\/div><\/div>"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-5.6708,9.8279],"lng":[-83.7719,-77.425]}},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\nfunction(el, x) {\n\n  var map = this;\n  (function() {\n    if (typeof L.Control.Fullscreen === 'undefined') {\n      var cssUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css';\n      var jsUrl = 'https://api.mapbox.com/mapbox.js/plugins/' +\n        'leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js';\n      var link = document.createElement('link');\n      link.rel = 'stylesheet';\n      link.href = cssUrl;\n      document.head.appendChild(link);\n      var script = document.createElement('script');\n      script.src = jsUrl;\n      script.onload = function() {\n        map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n      };\n      document.head.appendChild(script);\n    } else {\n      map.addControl(new L.Control.Fullscreen({ position: 'topleft' }));\n    }\n  })();\n\n  var popupsVisible = false;\n  var uid = 'map-' + Math.random().toString(36).substr(2, 9);\n\n  var control = L.control({position: 'topright'});\n\n  control.onAdd = function(map) {\n\n    var div = L.DomUtil.create(\n      'div',\n      'leaflet-bar leaflet-control'\n    );\n\n    div.innerHTML =\n      '<div id=\"popup-toggle-' + uid +\n      '\" style=\"display:flex;align-items:center;' +\n      'gap:6px;background:white;padding:6px 10px;' +\n      'border-radius:6px;box-shadow:0 1px 5px ' +\n      'rgba(0,0,0,0.3);font-size:12px;cursor:pointer;\">' +\n      '<span>Popups<\/span>' +\n      '<div id=\"toggle-switch-' + uid +\n      '\" style=\"width:34px;height:18px;' +\n      'background:#ccc;border-radius:9px;' +\n      'position:relative;\">' +\n      '<div id=\"toggle-knob-' + uid +\n      '\" style=\"width:14px;height:14px;' +\n      'background:white;border-radius:50%;' +\n      'position:absolute;top:2px;left:2px;\">' +\n      '<\/div><\/div><\/div>';\n\n    return div;\n  };\n\n  control.addTo(map);\n\n  function setUI(on) {\n    var knob = el.querySelector('#toggle-knob-' + uid);\n    var sw = el.querySelector('#toggle-switch-' + uid);\n    if (!knob || !sw) return;\n    knob.style.transition = '0.3s';\n    if (on) {\n      knob.style.left = '18px';\n      sw.style.background = '#4CAF50';\n    } else {\n      knob.style.left = '2px';\n      sw.style.background = '#ccc';\n    }\n  }\n\n  function showPopups() {\n    map._allPopups = [];\n    var sorted = popupData.slice().sort(function(a, b) {\n      return b.latitude - a.latitude;\n    });\n    sorted.forEach(function(d) {\n      if (!isNaN(d.longitude) && !isNaN(d.latitude)) {\n        var p = L.popup({autoClose:false, closeOnClick:false})\n          .setLatLng([d.latitude, d.longitude])\n          .setContent(d.popup)\n          .addTo(map);\n        map._allPopups.push(p);\n      }\n    });\n  }\n\n  function hidePopups() {\n    if (map._allPopups) {\n      map._allPopups.forEach(function(p) {\n        map.removeLayer(p);\n      });\n      map._allPopups = [];\n    }\n  }\n\n  var popupData = [{\"latitude\":-5.6708,\"longitude\":-77.6953,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/227574' target='_blank'>227574<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2008-01-04<br/><b>Country:<\\/b> Peru<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Abra Patricia road, San Martín<\\/span><br/><b>User:<\\/b> Peter Boesman<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/227574/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/227574/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":7.998,\"longitude\":-77.7138,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/359439' target='_blank'>359439<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2016-12-15<br/><b>Country:<\\/b> Panama<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Cerro Pirre (middle)<\\/span><br/><b>User:<\\/b> Hans Matheve<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/359439/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/359439/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-4.108,\"longitude\":-78.964,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/948986' target='_blank'>948986<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2024-11-06<br/><b>Country:<\\/b> Ecuador<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Zamora-Chinchipe: Río Bombuscaro<\\/span><br/><b>User:<\\/b> Gabriel Leite<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/948986/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/948986/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":9.8279,\"longitude\":-83.7719,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/956687' target='_blank'>956687<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2024-07-09<br/><b>Country:<\\/b> Costa Rica<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Hotel Quelitales, Cartago<\\/span><br/><b>User:<\\/b> Scott Olmstead<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/956687/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/956687/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":9.8279,\"longitude\":-83.7719,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/956688' target='_blank'>956688<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2024-07-09<br/><b>Country:<\\/b> Costa Rica<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Hotel Quelitales, Cartago<\\/span><br/><b>User:<\\/b> Scott Olmstead<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/956688/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/956688/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-0.537,\"longitude\":-77.425,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/1094105' target='_blank'>1094105<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2025-02-07<br/><b>Country:<\\/b> Ecuador<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Rio Bigal Reserve, Orellana<\\/span><br/><b>User:<\\/b> Marc Anderson<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/1094105/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/1094105/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"},{\"latitude\":-4.1146,\"longitude\":-78.9648,\"popup\":\"<div style='font-size:100%;width:250px;overflow-wrap:break-word;'><br/><b>Repository:<\\/b> Xeno-Canto<br/><b>Observation:<\\/b> <a href='https://xeno-canto.org/1173344' target='_blank'>1173344<\\/a><br/><b>Species:<\\/b> <i>Phaethornis guy<\\/i><br/><b>Date:<\\/b> 2024-09-26<br/><b>Country:<\\/b> Ecuador<br/><b>Locality:<\\/b> <span style='overflow-wrap:break-word;'>Parque Nacional Podocarpus, Bombuscaro, Zamora Chinchipe<\\/span><br/><b>User:<\\/b> Juan Freile<br/><br/><div class='popup-gallery' style='text-align:center;'><div class='slide' style='display:block;'><div style='width:100%; text-align:center;'><audio controls preload='none' style='width:100%;'><source src='https://xeno-canto.org/1173344/download'><\\/audio><div style='font-size:0.8em; margin-top:4px;'><a href='https://xeno-canto.org/1173344/player' target='_blank' rel='noopener noreferrer'>View dynamic spectrogram on Xeno-Canto<\\/a><\\/div><\\/div><\\/div><\\/div><\\/div>\"}];\n\n  setUI(false);\n\n  var toggle = el.querySelector('#popup-toggle-' + uid);\n\n  if (toggle) {\n    toggle.onclick = function() {\n      if (!popupsVisible) {\n        showPopups();\n        popupsVisible = true;\n        setUI(true);\n      } else {\n        hidePopups();\n        popupsVisible = false;\n        setUI(false);\n      }\n    };\n  }\n\n  window.nextSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i + 1) % slides.length].style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n  window.prevSlide = function(btn) {\n    var gallery = btn.parentElement.parentElement;\n    var slides = gallery.getElementsByClassName('slide');\n    for (var i = 0; i < slides.length; i++) {\n      if (slides[i].style.display === 'block') {\n        slides[i].style.display = 'none';\n        slides[(i - 1 + slides.length) % slides.length]\n          .style.display = 'block';\n        return;\n      }\n    }\n    slides[0].style.display = 'block';\n  };\n\n}\n).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
 <p>&nbsp;</p>
 <p>Once you feel fine with the subset of data you can go ahead and download the sound files and save the metadata as a .csv file:</p>
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">query_xc</span>(<span class="at">X =</span> song_pg, <span class="at">path =</span> <span class="st">"./examples/p_guy"</span>, <span class="at">parallel =</span> <span class="dv">3</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(song_pg, <span class="at">file =</span> <span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">download_media</span>(<span class="at">metadata =</span> song_phae_guy, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="st">"DIRECTORY WHERE YOU WANT TO SAVE THE FILES"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(song_phae_guy, <span class="at">file =</span> <span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>&nbsp;</p>
@@ -343,9 +358,9 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mp3_2_wav</span>(<span class="at">samp.rate =</span> <span class="fl">22.05</span>, <span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fix_wavs</span>(<span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>, <span class="at">samp.rate =</span> <span class="fl">44.1</span>, <span class="at">bit.depth =</span> <span class="dv">16</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mp3_2_wav</span>(<span class="at">samp.rate =</span> <span class="fl">22.05</span>, <span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fix_wavs</span>(<span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>, <span class="at">samp.rate =</span> <span class="fl">44.1</span>, <span class="at">bit.depth =</span> <span class="dv">16</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>&nbsp;</p>
@@ -361,16 +376,16 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readxl") # install if needed</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(annotations)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readxl") # install if needed</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(annotations)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -459,9 +474,9 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sound_file_path <span class="ot">&lt;-</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cs <span class="ot">&lt;-</span> <span class="fu">check_sels</span>(annotations, <span class="at">path =</span> sound_file_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sound_file_path <span class="ot">&lt;-</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cs <span class="ot">&lt;-</span> <span class="fu">check_sels</span>(annotations, <span class="at">path =</span> sound_file_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>checking annotations (step 0 of 0):</code></pre>
@@ -478,7 +493,7 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">spectro_analysis</span>(<span class="at">X =</span> annotations, <span class="at">path =</span> sound_file_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">spectro_analysis</span>(<span class="at">X =</span> annotations, <span class="at">path =</span> sound_file_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>&nbsp;</p>
@@ -486,12 +501,12 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run excluding sound file and selec columns</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(sp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># add first 2 PCs to sound file and selec columns</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sp[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], pca<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run excluding sound file and selec columns</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(sp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># add first 2 PCs to sound file and selec columns</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sp[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], pca<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>&nbsp;</p>
@@ -499,7 +514,7 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
@@ -564,14 +579,14 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read XC metadata</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a column with the file name in the metadata</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>song_pg<span class="sc">$</span>sound.files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(song_pg<span class="sc">$</span>Genus, <span class="st">"-"</span>, song_pg<span class="sc">$</span>Specific_epithet, <span class="st">"-"</span>, song_pg<span class="sc">$</span>Recording_ID, <span class="st">".wav"</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and merge based on sound files and any metadata column we need</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>pca_data_md <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca_data, song_pg[, <span class="fu">c</span>(<span class="st">"sound.files"</span>, <span class="st">"Country"</span>, <span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read XC metadata</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create a column with the file name in the metadata</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>song_phae_guy<span class="sc">$</span>sound.files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(song_phae_guy<span class="sc">$</span>genus, <span class="st">"-"</span>, song_phae_guy<span class="sc">$</span>specific_epithet, <span class="st">"-"</span>, song_phae_guy<span class="sc">$</span>key, <span class="st">".wav"</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># and merge based on sound files and any metadata column we need</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>pca_data_md <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca_data, song_phae_guy[, <span class="fu">c</span>(<span class="st">"sound.files"</span>, <span class="st">"country"</span>, <span class="st">"latitude"</span>, <span class="st">"longitude"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>&nbsp;</p>
@@ -582,21 +597,21 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("viridis")</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("viridis")</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: viridisLite</code></pre>
 </div>
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Country, <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> country, <span class="at">shape =</span> country)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -611,10 +626,10 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Longitude, <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> longitude, <span class="at">shape =</span> country)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -629,15 +644,15 @@ Use `map_locations()` from the package suwo instead
 <div class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create geographic and acoustic distance matrices</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>)])</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>acoust_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>)])</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("vegan")</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># run test</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(geo_dist, acoust_dist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create geographic and acoustic distance matrices</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"latitude"</span>, <span class="st">"longitude"</span>)])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>acoust_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>)])</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("vegan")</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># run test</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(geo_dist, acoust_dist)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -646,14 +661,14 @@ Mantel statistic based on Pearson's product-moment correlation
 Call:
 mantel(xdis = geo_dist, ydis = acoust_dist) 
 
-Mantel statistic r: 0.02618 
-      Significance: 0.272 
+Mantel statistic r: -0.2146 
+      Significance: 0.969 
 
 Upper quantiles of permutations (null model):
-   90%    95%  97.5%    99% 
-0.0721 0.0997 0.1302 0.1721 
+  90%   95% 97.5%   99% 
+0.274 0.346 0.474 0.474 
 Permutation: free
-Number of permutations: 999</code></pre>
+Number of permutations: 5039</code></pre>
 </div>
 </div>
 <p>&nbsp;</p>
@@ -686,24 +701,25 @@ attached base packages:
 
 other attached packages:
  [1] vegan_2.7-5        permute_0.9-10     viridis_0.6.5      viridisLite_0.4.3 
- [5] ggplot2_4.0.3      readxl_1.4.5       warbleR_1.1.38     NatureSounds_1.0.5
- [9] knitr_1.52         seewave_2.2.4      tuneR_1.4.7       
+ [5] ggplot2_4.0.3      readxl_1.4.5       suwo_0.2.2         warbleR_1.1.38    
+ [9] NatureSounds_1.0.5 knitr_1.52         seewave_2.2.4      tuneR_1.4.7       
 
 loaded via a namespace (and not attached):
  [1] generics_0.1.4     lattice_0.22-9     digest_0.6.39      magrittr_2.0.5    
  [5] evaluate_1.0.5     grid_4.5.2         RColorBrewer_1.1-3 soundgen_3.0.0    
  [9] fastmap_1.2.0      Matrix_1.7-4       cellranger_1.1.0   jsonlite_2.0.0    
-[13] gridExtra_2.3.1    mgcv_1.9-4         httr_1.4.9         scales_1.4.0      
-[17] pbapply_1.7-5      cli_3.6.6          rlang_1.3.0        fftw_1.0-9        
-[21] splines_4.5.2      withr_3.0.3        yaml_2.3.12        otel_0.2.0        
-[25] tools_4.5.2        parallel_4.5.2     dplyr_1.2.1        curl_8.0.0        
-[29] vctrs_0.7.3        R6_2.6.1           proxy_0.4-29       lifecycle_1.0.5   
-[33] dtw_1.23-3         htmlwidgets_1.6.4  MASS_7.3-65        cluster_2.1.8.2   
-[37] pkgconfig_2.0.3    pillar_1.11.1      gtable_0.3.6       glue_1.8.1        
-[41] Rcpp_1.1.2         xfun_0.61          tibble_3.3.1       tidyselect_1.2.1  
-[45] rstudioapi_0.18.0  farver_2.1.2       nlme_3.1-168       htmltools_0.5.9   
-[49] rmarkdown_2.32     labeling_0.4.3     signal_1.8-1       compiler_4.5.2    
-[53] S7_0.2.2          </code></pre>
+[13] backports_1.5.1    gridExtra_2.3.1    mgcv_1.9-4         httr_1.4.9        
+[17] crosstalk_1.2.2    scales_1.4.0       pbapply_1.7-5      jquerylib_0.1.4   
+[21] cli_3.6.6          rlang_1.3.0        fftw_1.0-9         splines_4.5.2     
+[25] withr_3.0.3        yaml_2.3.12        otel_0.2.0         tools_4.5.2       
+[29] parallel_4.5.2     checkmate_2.3.4    dplyr_1.2.1        curl_8.1.0        
+[33] vctrs_0.7.3        R6_2.6.1           proxy_0.4-29       lifecycle_1.0.5   
+[37] dtw_1.23-3         leaflet_2.2.3      htmlwidgets_1.6.4  MASS_7.3-65       
+[41] cluster_2.1.8.2    pkgconfig_2.0.3    pillar_1.11.1      gtable_0.3.6      
+[45] glue_1.8.1         Rcpp_1.1.2         xfun_0.62          tibble_3.3.1      
+[49] tidyselect_1.2.1   rstudioapi_0.18.0  farver_2.1.2       nlme_3.1-168      
+[53] htmltools_0.5.9    labeling_0.4.3     rmarkdown_2.32     signal_1.8-1      
+[57] compiler_4.5.2     S7_0.2.2          </code></pre>
 </div>
 </div>
 
@@ -1169,282 +1185,290 @@ loaded via a namespace (and not attached):
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &lt;font size="7"&gt;&lt;b&gt;Case study&lt;/b&gt;&lt;/font&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc-depth:</span><span class="co"> 2</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="an">toc-location:</span><span class="co"> left</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> true</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="an">highlight-style:</span><span class="co"> pygments</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: kable</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">    css: styles.css</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>::: {.alert .alert-info}</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## **Objective** {.unnumbered .unlisted}</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Demonstrate how to articulate functions used during the course to obtain, explore and quantify acoustic data</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Download Xeno-Canto data</span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>The warbleR function <span class="co">[</span><span class="ot">`query_xc()`</span><span class="co">](https://marce10.github.io/warbleR/reference/query_xc.html)</span> queries for avian vocalization recordings in the open-access online repository <span class="co">[</span><span class="ot">Xeno-Canto</span><span class="co">](https://xeno-canto.org)</span>. It can return recordings metadata or download the associated sound files.</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>Get recording metadata for green hermits (*Phaethornis guy*):</span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE,message=FALSE,  warning=FALSE}</span></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(warbleR)</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE,  warning=FALSE, eval = FALSE}</span></span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(warbleR)</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>pg <span class="ot">&lt;-</span> <span class="fu">query_xc</span>(<span class="at">qword =</span> <span class="st">'Phaethornis guy'</span>, <span class="at">download =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>Keep only song vocalizations of high quality:</span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> pg[<span class="fu">grepl</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, pg<span class="sc">$</span>Vocalization_type) <span class="sc">&amp;</span> pg<span class="sc">$</span>Quality <span class="sc">==</span> <span class="st">"A"</span>, ]</span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 1 site from Colombia to have a few samples per country</span></span>
-<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> song_pg[song_pg<span class="sc">$</span>Locality <span class="sc">!=</span> <span class="st">"Suaita, Santander"</span>, ]</span>
-<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
-<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>Map locations using <span class="co">[</span><span class="ot">`map_xc()`</span><span class="co">](https://marce10.github.io/warbleR/reference/map_xc.html)</span>:</span>
-<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, results = 'asis', fig.width=9}</span></span>
-<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a><span class="fu">map_xc</span>(song_pg, <span class="at">leaflet.map =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a>Once you feel fine with the subset of data you can go ahead and download the sound files and save the metadata as a .csv file:</span>
-<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE, fig.width=10}</span></span>
-<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="fu">query_xc</span>(<span class="at">X =</span> song_pg, <span class="at">path =</span> <span class="st">"./examples/p_guy"</span>, <span class="at">parallel =</span> <span class="dv">3</span>)</span>
-<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(song_pg, <span class="at">file =</span> <span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-82"><a href="#cb22-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-83"><a href="#cb22-83" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preparing sound files for analysis (optional)</span></span>
-<span id="cb22-84"><a href="#cb22-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-85"><a href="#cb22-85" aria-hidden="true" tabindex="-1"></a>Now convert all to .wav format (<span class="in">`mp3_2_wav`</span>) and homogenizing sampling rate and bit depth (<span class="in">`fix_wavs`</span>):</span>
-<span id="cb22-86"><a href="#cb22-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-87"><a href="#cb22-87" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
-<span id="cb22-88"><a href="#cb22-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-89"><a href="#cb22-89" aria-hidden="true" tabindex="-1"></a><span class="fu">mp3_2_wav</span>(<span class="at">samp.rate =</span> <span class="fl">22.05</span>, <span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>)</span>
-<span id="cb22-90"><a href="#cb22-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-91"><a href="#cb22-91" aria-hidden="true" tabindex="-1"></a><span class="fu">fix_wavs</span>(<span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>, <span class="at">samp.rate =</span> <span class="fl">44.1</span>, <span class="at">bit.depth =</span> <span class="dv">16</span>)</span>
-<span id="cb22-92"><a href="#cb22-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-93"><a href="#cb22-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-94"><a href="#cb22-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-95"><a href="#cb22-95" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-96"><a href="#cb22-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Annotating sound files in Raven</span></span>
-<span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a>Now songs should be manually annotated and all the selection in the .txt files should be pooled together in a single spreadsheet.</span>
-<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importing annotations into R</span></span>
-<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a>Once that is done we can read the spreadsheet with the package 'readxl' as follows:</span>
-<span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE, echo = FALSE}</span></span>
-<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rraven)</span>
-<span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a>ann_p_guy <span class="ot">&lt;-</span> <span class="fu">imp_raven</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy"</span>, <span class="at">warbler.format =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-112"><a href="#cb22-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-113"><a href="#cb22-113" aria-hidden="true" tabindex="-1"></a><span class="fu">check_sels</span>(ann_p_guy, <span class="at">path =</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span>)</span>
-<span id="cb22-114"><a href="#cb22-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-115"><a href="#cb22-115" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ann_p_guy, <span class="at">file =</span> <span class="st">"./examples/p_guy/annotations_p_guy.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb22-116"><a href="#cb22-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-117"><a href="#cb22-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-118"><a href="#cb22-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-119"><a href="#cb22-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
-<span id="cb22-120"><a href="#cb22-120" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readxl") # install if needed</span></span>
-<span id="cb22-121"><a href="#cb22-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-122"><a href="#cb22-122" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
-<span id="cb22-123"><a href="#cb22-123" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb22-124"><a href="#cb22-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-125"><a href="#cb22-125" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
-<span id="cb22-126"><a href="#cb22-126" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
-<span id="cb22-127"><a href="#cb22-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-128"><a href="#cb22-128" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
-<span id="cb22-129"><a href="#cb22-129" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(annotations)</span>
-<span id="cb22-130"><a href="#cb22-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-131"><a href="#cb22-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-132"><a href="#cb22-132" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-133"><a href="#cb22-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-134"><a href="#cb22-134" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
-<span id="cb22-135"><a href="#cb22-135" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb22-136"><a href="#cb22-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-137"><a href="#cb22-137" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
-<span id="cb22-138"><a href="#cb22-138" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
-<span id="cb22-139"><a href="#cb22-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-140"><a href="#cb22-140" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(annotations[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">7</span>])</span>
-<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a>Note that the column names should be: "start", "end", "bottom.freq", "top.freq" and "sound.files". In addition frequency columns ("bottom.freq" and "top.freq") must be in kHz, not in Hz. We can check if the annotations are in the right format using warbleR's <span class="in">`check_sels()`</span>:</span>
-<span id="cb22-145"><a href="#cb22-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-148"><a href="#cb22-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a>sound_file_path <span class="ot">&lt;-</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span></span>
-<span id="cb22-150"><a href="#cb22-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-151"><a href="#cb22-151" aria-hidden="true" tabindex="-1"></a>cs <span class="ot">&lt;-</span> <span class="fu">check_sels</span>(annotations, <span class="at">path =</span> sound_file_path)</span>
-<span id="cb22-152"><a href="#cb22-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-153"><a href="#cb22-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-154"><a href="#cb22-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-155"><a href="#cb22-155" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-156"><a href="#cb22-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-157"><a href="#cb22-157" aria-hidden="true" tabindex="-1"></a><span class="fu">## Measure acoustic structure</span></span>
-<span id="cb22-158"><a href="#cb22-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-159"><a href="#cb22-159" aria-hidden="true" tabindex="-1"></a>We can measured several parameters of acoustic structure with the warbleR function <span class="in">`spectro_analysis()`</span>:</span>
-<span id="cb22-160"><a href="#cb22-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-161"><a href="#cb22-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
-<span id="cb22-162"><a href="#cb22-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-163"><a href="#cb22-163" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">spectro_analysis</span>(<span class="at">X =</span> annotations, <span class="at">path =</span> sound_file_path)</span>
-<span id="cb22-164"><a href="#cb22-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-165"><a href="#cb22-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-166"><a href="#cb22-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-167"><a href="#cb22-167" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-168"><a href="#cb22-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-169"><a href="#cb22-169" aria-hidden="true" tabindex="-1"></a>Then we summarize those parameters with a Principal Component Analysis (PCA):</span>
-<span id="cb22-170"><a href="#cb22-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-173"><a href="#cb22-173" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-174"><a href="#cb22-174" aria-hidden="true" tabindex="-1"></a><span class="co"># run excluding sound file and selec columns</span></span>
-<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(sp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
-<span id="cb22-176"><a href="#cb22-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-177"><a href="#cb22-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-178"><a href="#cb22-178" aria-hidden="true" tabindex="-1"></a><span class="co"># add first 2 PCs to sound file and selec columns</span></span>
-<span id="cb22-179"><a href="#cb22-179" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sp[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], pca<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
-<span id="cb22-180"><a href="#cb22-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-181"><a href="#cb22-181" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-182"><a href="#cb22-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-183"><a href="#cb22-183" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-184"><a href="#cb22-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-185"><a href="#cb22-185" aria-hidden="true" tabindex="-1"></a>At this point should should get someting like this:</span>
-<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
-<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca_data)</span>
-<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
-<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pca_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, ])</span>
-<span id="cb22-193"><a href="#cb22-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-194"><a href="#cb22-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-195"><a href="#cb22-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-196"><a href="#cb22-196" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-198"><a href="#cb22-198" aria-hidden="true" tabindex="-1"></a>'PC1' and 'PC2' are the 2 new dimensions that will be used to represent the acoustic space.</span>
-<span id="cb22-199"><a href="#cb22-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-200"><a href="#cb22-200" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-201"><a href="#cb22-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-202"><a href="#cb22-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Adding metadata</span></span>
-<span id="cb22-203"><a href="#cb22-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-204"><a href="#cb22-204" aria-hidden="true" tabindex="-1"></a>Now we just need to add any metadata we considered important to try to explain acoustic similarities shown in the acoustic space scatterplot:</span>
-<span id="cb22-205"><a href="#cb22-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-208"><a href="#cb22-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-209"><a href="#cb22-209" aria-hidden="true" tabindex="-1"></a><span class="co"># read XC metadata</span></span>
-<span id="cb22-210"><a href="#cb22-210" aria-hidden="true" tabindex="-1"></a>song_pg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
-<span id="cb22-211"><a href="#cb22-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-212"><a href="#cb22-212" aria-hidden="true" tabindex="-1"></a><span class="co"># create a column with the file name in the metadata</span></span>
-<span id="cb22-213"><a href="#cb22-213" aria-hidden="true" tabindex="-1"></a>song_pg<span class="sc">$</span>sound.files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(song_pg<span class="sc">$</span>Genus, <span class="st">"-"</span>, song_pg<span class="sc">$</span>Specific_epithet, <span class="st">"-"</span>, song_pg<span class="sc">$</span>Recording_ID, <span class="st">".wav"</span>)</span>
-<span id="cb22-214"><a href="#cb22-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-215"><a href="#cb22-215" aria-hidden="true" tabindex="-1"></a><span class="co"># and merge based on sound files and any metadata column we need</span></span>
-<span id="cb22-216"><a href="#cb22-216" aria-hidden="true" tabindex="-1"></a>pca_data_md <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca_data, song_pg[, <span class="fu">c</span>(<span class="st">"sound.files"</span>, <span class="st">"Country"</span>, <span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>)])</span>
-<span id="cb22-217"><a href="#cb22-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-218"><a href="#cb22-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-219"><a href="#cb22-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-220"><a href="#cb22-220" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-221"><a href="#cb22-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-222"><a href="#cb22-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assessing geographic patterns of variation</span></span>
-<span id="cb22-223"><a href="#cb22-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-224"><a href="#cb22-224" aria-hidden="true" tabindex="-1"></a>We are ready to plot the acoustic space scatterplot. For this we will use the package 'ggplot2':</span>
-<span id="cb22-225"><a href="#cb22-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-228"><a href="#cb22-228" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-229"><a href="#cb22-229" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
-<span id="cb22-230"><a href="#cb22-230" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb22-231"><a href="#cb22-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-232"><a href="#cb22-232" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("viridis")</span></span>
-<span id="cb22-233"><a href="#cb22-233" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
-<span id="cb22-234"><a href="#cb22-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-235"><a href="#cb22-235" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb22-236"><a href="#cb22-236" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Country, <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
-<span id="cb22-237"><a href="#cb22-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
-<span id="cb22-238"><a href="#cb22-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>()</span>
-<span id="cb22-239"><a href="#cb22-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-240"><a href="#cb22-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-241"><a href="#cb22-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-242"><a href="#cb22-242" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-243"><a href="#cb22-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-244"><a href="#cb22-244" aria-hidden="true" tabindex="-1"></a>You can also add information about their geographic location (in this case longitude) to the plot as follows:</span>
-<span id="cb22-245"><a href="#cb22-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-248"><a href="#cb22-248" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb22-249"><a href="#cb22-249" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb22-250"><a href="#cb22-250" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> Longitude, <span class="at">shape =</span> Country)) <span class="sc">+</span></span>
-<span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()</span>
-<span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-254"><a href="#cb22-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-256"><a href="#cb22-256" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-257"><a href="#cb22-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-258"><a href="#cb22-258" aria-hidden="true" tabindex="-1"></a>We can even test if geographic distance is associated to acoustic distance (i.e. if individuals geographically closer produce more similar songs) using a <span class="co">[</span><span class="ot">mantel test</span><span class="co">](https://en.wikipedia.org/wiki/Mantel_test)</span> (<span class="in">`mantel`</span> function from the package vegan):</span>
-<span id="cb22-259"><a href="#cb22-259" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
-<span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a><span class="co"># create geographic and acoustic distance matrices</span></span>
-<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"Latitude"</span>, <span class="st">"Longitude"</span>)])</span>
-<span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a>acoust_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>)])</span>
-<span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("vegan")</span></span>
-<span id="cb22-267"><a href="#cb22-267" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb22-268"><a href="#cb22-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-269"><a href="#cb22-269" aria-hidden="true" tabindex="-1"></a><span class="co"># run test</span></span>
-<span id="cb22-270"><a href="#cb22-270" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(geo_dist, acoust_dist)</span>
-<span id="cb22-271"><a href="#cb22-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-272"><a href="#cb22-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-273"><a href="#cb22-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-274"><a href="#cb22-274" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
-<span id="cb22-275"><a href="#cb22-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-276"><a href="#cb22-276" aria-hidden="true" tabindex="-1"></a>In this example no association between geographic and acoustic distance was detected (p value <span class="sc">\&gt;</span> 0.05).</span>
-<span id="cb22-277"><a href="#cb22-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-278"><a href="#cb22-278" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
-<span id="cb22-279"><a href="#cb22-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-280"><a href="#cb22-280" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">font</span><span class="ot"> size</span><span class="op">=</span><span class="st">"4"</span><span class="dt">&gt;</span>Session information<span class="dt">&lt;/</span><span class="kw">font</span><span class="dt">&gt;</span></span>
-<span id="cb22-281"><a href="#cb22-281" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-282"><a href="#cb22-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r session info, echo=F}</span></span>
-<span id="cb22-283"><a href="#cb22-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-284"><a href="#cb22-284" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
-<span id="cb22-285"><a href="#cb22-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &lt;font size="7"&gt;&lt;b&gt;Case study&lt;/b&gt;&lt;/font&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="an">toc-depth:</span><span class="co"> 2</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="an">toc-location:</span><span class="co"> left</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> true</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="an">highlight-style:</span><span class="co"> pygments</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">    df-print: kable</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: show</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">    css: styles.css</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>::: {.alert .alert-info}</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## **Objective** {.unnumbered .unlisted}</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Demonstrate how to articulate functions used during the course to obtain, explore and quantify acoustic data</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="fu">## Download Xeno-Canto data</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>The warbleR function <span class="co">[</span><span class="ot">`query_xc()`</span><span class="co">](https://marce10.github.io/warbleR/reference/query_xc.html)</span> queries for avian vocalization recordings in the open-access online repository <span class="co">[</span><span class="ot">Xeno-Canto</span><span class="co">](https://xeno-canto.org)</span>. It can return recordings metadata or download the associated sound files.</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>Get recording metadata for green hermits (*Phaethornis guy*):</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE,message=FALSE,  warning=FALSE}</span></span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(warbleR)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suwo)</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE,  warning=FALSE, eval = FALSE}</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(suwo)</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="co"># get cookies for WikiAves (only needs to be done once per session)</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="fu">access_wikiaves</span>()</span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">xc_api_key =</span> <span class="st">"YOUR_API_KEY_HERE"</span>)</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>phae_guy <span class="ot">&lt;-</span> <span class="fu">query_xenocanto</span>(<span class="st">'Phaethornis guy'</span>, <span class="at">all_data =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>Keep only song vocalizations of high quality:</span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> phae_guy[<span class="fu">grepl</span>(<span class="st">"song"</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>, phae_guy<span class="sc">$</span>vocalization_type) <span class="sc">&amp;</span> phae_guy<span class="sc">$</span>quality <span class="sc">==</span> <span class="st">"A"</span>, ]</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a><span class="co"># remove 1 site from Colombia to have a few samples per country</span></span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> song_phae_guy[song_phae_guy<span class="sc">$</span>locality <span class="sc">!=</span> <span class="st">"Suaita, Santander"</span>, ]</span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = TRUE, echo = FALSE}</span></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(song_phae_guy, "./examples/p_guy/metadata_p_guy_XC.csv", row.names = FALSE)</span></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>Map locations using <span class="co">[</span><span class="ot">`map_xc()`</span><span class="co">](https://marce10.github.io/warbleR/reference/map_xc.html)</span>:</span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, results = 'asis', fig.width=9}</span></span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a><span class="fu">map_locations</span>(song_phae_guy)</span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-76"><a href="#cb21-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-77"><a href="#cb21-77" aria-hidden="true" tabindex="-1"></a>Once you feel fine with the subset of data you can go ahead and download the sound files and save the metadata as a .csv file:</span>
+<span id="cb21-78"><a href="#cb21-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-79"><a href="#cb21-79" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE, fig.width=10}</span></span>
+<span id="cb21-80"><a href="#cb21-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-81"><a href="#cb21-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-82"><a href="#cb21-82" aria-hidden="true" tabindex="-1"></a><span class="fu">download_media</span>(<span class="at">metadata =</span> song_phae_guy, </span>
+<span id="cb21-83"><a href="#cb21-83" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="st">"DIRECTORY WHERE YOU WANT TO SAVE THE FILES"</span>)</span>
+<span id="cb21-84"><a href="#cb21-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-85"><a href="#cb21-85" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(song_phae_guy, <span class="at">file =</span> <span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb21-86"><a href="#cb21-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-87"><a href="#cb21-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-88"><a href="#cb21-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-89"><a href="#cb21-89" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-90"><a href="#cb21-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Preparing sound files for analysis (optional)</span></span>
+<span id="cb21-92"><a href="#cb21-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-93"><a href="#cb21-93" aria-hidden="true" tabindex="-1"></a>Now convert all to .wav format (<span class="in">`mp3_2_wav`</span>) and homogenizing sampling rate and bit depth (<span class="in">`fix_wavs`</span>):</span>
+<span id="cb21-94"><a href="#cb21-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-95"><a href="#cb21-95" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb21-96"><a href="#cb21-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-97"><a href="#cb21-97" aria-hidden="true" tabindex="-1"></a><span class="fu">mp3_2_wav</span>(<span class="at">samp.rate =</span> <span class="fl">22.05</span>, <span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>)</span>
+<span id="cb21-98"><a href="#cb21-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-99"><a href="#cb21-99" aria-hidden="true" tabindex="-1"></a><span class="fu">fix_wavs</span>(<span class="at">path =</span>  <span class="st">"./examples/p_guy"</span>, <span class="at">samp.rate =</span> <span class="fl">44.1</span>, <span class="at">bit.depth =</span> <span class="dv">16</span>)</span>
+<span id="cb21-100"><a href="#cb21-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-101"><a href="#cb21-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-102"><a href="#cb21-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-103"><a href="#cb21-103" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-104"><a href="#cb21-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-105"><a href="#cb21-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## Annotating sound files in Raven</span></span>
+<span id="cb21-106"><a href="#cb21-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-107"><a href="#cb21-107" aria-hidden="true" tabindex="-1"></a>Now songs should be manually annotated and all the selection in the .txt files should be pooled together in a single spreadsheet.</span>
+<span id="cb21-108"><a href="#cb21-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-109"><a href="#cb21-109" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-110"><a href="#cb21-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-111"><a href="#cb21-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importing annotations into R</span></span>
+<span id="cb21-112"><a href="#cb21-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-113"><a href="#cb21-113" aria-hidden="true" tabindex="-1"></a>Once that is done we can read the spreadsheet with the package 'readxl' as follows:</span>
+<span id="cb21-114"><a href="#cb21-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-115"><a href="#cb21-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE, echo = FALSE}</span></span>
+<span id="cb21-116"><a href="#cb21-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-117"><a href="#cb21-117" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Rraven)</span>
+<span id="cb21-118"><a href="#cb21-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-119"><a href="#cb21-119" aria-hidden="true" tabindex="-1"></a>ann_p_guy <span class="ot">&lt;-</span> <span class="fu">imp_raven</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy"</span>, <span class="at">warbler.format =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb21-120"><a href="#cb21-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-121"><a href="#cb21-121" aria-hidden="true" tabindex="-1"></a><span class="fu">check_sels</span>(ann_p_guy, <span class="at">path =</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span>)</span>
+<span id="cb21-122"><a href="#cb21-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-123"><a href="#cb21-123" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ann_p_guy, <span class="at">file =</span> <span class="st">"./examples/p_guy/annotations_p_guy.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb21-124"><a href="#cb21-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-125"><a href="#cb21-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-126"><a href="#cb21-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-127"><a href="#cb21-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb21-128"><a href="#cb21-128" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readxl") # install if needed</span></span>
+<span id="cb21-129"><a href="#cb21-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-130"><a href="#cb21-130" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb21-131"><a href="#cb21-131" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb21-132"><a href="#cb21-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-133"><a href="#cb21-133" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
+<span id="cb21-134"><a href="#cb21-134" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
+<span id="cb21-135"><a href="#cb21-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-136"><a href="#cb21-136" aria-hidden="true" tabindex="-1"></a><span class="co"># check data</span></span>
+<span id="cb21-137"><a href="#cb21-137" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(annotations)</span>
+<span id="cb21-138"><a href="#cb21-138" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-139"><a href="#cb21-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-140"><a href="#cb21-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb21-141"><a href="#cb21-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-142"><a href="#cb21-142" aria-hidden="true" tabindex="-1"></a><span class="co"># load package</span></span>
+<span id="cb21-143"><a href="#cb21-143" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb21-144"><a href="#cb21-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-145"><a href="#cb21-145" aria-hidden="true" tabindex="-1"></a><span class="co"># read data</span></span>
+<span id="cb21-146"><a href="#cb21-146" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"./examples/p_guy/annotations_p_guy.xlsx"</span>)</span>
+<span id="cb21-147"><a href="#cb21-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(annotations[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">7</span>])</span>
+<span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-150"><a href="#cb21-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-152"><a href="#cb21-152" aria-hidden="true" tabindex="-1"></a>Note that the column names should be: "start", "end", "bottom.freq", "top.freq" and "sound.files". In addition frequency columns ("bottom.freq" and "top.freq") must be in kHz, not in Hz. We can check if the annotations are in the right format using warbleR's <span class="in">`check_sels()`</span>:</span>
+<span id="cb21-153"><a href="#cb21-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-156"><a href="#cb21-156" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-157"><a href="#cb21-157" aria-hidden="true" tabindex="-1"></a>sound_file_path <span class="ot">&lt;-</span> <span class="st">"./examples/p_guy/converted_sound_files/"</span></span>
+<span id="cb21-158"><a href="#cb21-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-159"><a href="#cb21-159" aria-hidden="true" tabindex="-1"></a>cs <span class="ot">&lt;-</span> <span class="fu">check_sels</span>(annotations, <span class="at">path =</span> sound_file_path)</span>
+<span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a><span class="fu">## Measure acoustic structure</span></span>
+<span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-167"><a href="#cb21-167" aria-hidden="true" tabindex="-1"></a>We can measured several parameters of acoustic structure with the warbleR function <span class="in">`spectro_analysis()`</span>:</span>
+<span id="cb21-168"><a href="#cb21-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-169"><a href="#cb21-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
+<span id="cb21-170"><a href="#cb21-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-171"><a href="#cb21-171" aria-hidden="true" tabindex="-1"></a>sp <span class="ot">&lt;-</span> <span class="fu">spectro_analysis</span>(<span class="at">X =</span> annotations, <span class="at">path =</span> sound_file_path)</span>
+<span id="cb21-172"><a href="#cb21-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-173"><a href="#cb21-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-174"><a href="#cb21-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-175"><a href="#cb21-175" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-176"><a href="#cb21-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-177"><a href="#cb21-177" aria-hidden="true" tabindex="-1"></a>Then we summarize those parameters with a Principal Component Analysis (PCA):</span>
+<span id="cb21-178"><a href="#cb21-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-181"><a href="#cb21-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-182"><a href="#cb21-182" aria-hidden="true" tabindex="-1"></a><span class="co"># run excluding sound file and selec columns</span></span>
+<span id="cb21-183"><a href="#cb21-183" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(sp[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb21-184"><a href="#cb21-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-185"><a href="#cb21-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-186"><a href="#cb21-186" aria-hidden="true" tabindex="-1"></a><span class="co"># add first 2 PCs to sound file and selec columns</span></span>
+<span id="cb21-187"><a href="#cb21-187" aria-hidden="true" tabindex="-1"></a>pca_data <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sp[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)], pca<span class="sc">$</span>x[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span>
+<span id="cb21-188"><a href="#cb21-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-189"><a href="#cb21-189" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-190"><a href="#cb21-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-191"><a href="#cb21-191" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-192"><a href="#cb21-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-193"><a href="#cb21-193" aria-hidden="true" tabindex="-1"></a>At this point should should get someting like this:</span>
+<span id="cb21-194"><a href="#cb21-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-195"><a href="#cb21-195" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, eval = FALSE}</span></span>
+<span id="cb21-196"><a href="#cb21-196" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pca_data)</span>
+<span id="cb21-197"><a href="#cb21-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-198"><a href="#cb21-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-199"><a href="#cb21-199" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo = FALSE}</span></span>
+<span id="cb21-200"><a href="#cb21-200" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pca_data[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, ])</span>
+<span id="cb21-201"><a href="#cb21-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-202"><a href="#cb21-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-203"><a href="#cb21-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-204"><a href="#cb21-204" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-205"><a href="#cb21-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-206"><a href="#cb21-206" aria-hidden="true" tabindex="-1"></a>'PC1' and 'PC2' are the 2 new dimensions that will be used to represent the acoustic space.</span>
+<span id="cb21-207"><a href="#cb21-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-208"><a href="#cb21-208" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-209"><a href="#cb21-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-210"><a href="#cb21-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## Adding metadata</span></span>
+<span id="cb21-211"><a href="#cb21-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-212"><a href="#cb21-212" aria-hidden="true" tabindex="-1"></a>Now we just need to add any metadata we considered important to try to explain acoustic similarities shown in the acoustic space scatterplot:</span>
+<span id="cb21-213"><a href="#cb21-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-216"><a href="#cb21-216" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-217"><a href="#cb21-217" aria-hidden="true" tabindex="-1"></a><span class="co"># read XC metadata</span></span>
+<span id="cb21-218"><a href="#cb21-218" aria-hidden="true" tabindex="-1"></a>song_phae_guy <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./examples/p_guy/metadata_p_guy_XC.csv"</span>)</span>
+<span id="cb21-219"><a href="#cb21-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-220"><a href="#cb21-220" aria-hidden="true" tabindex="-1"></a><span class="co"># create a column with the file name in the metadata</span></span>
+<span id="cb21-221"><a href="#cb21-221" aria-hidden="true" tabindex="-1"></a>song_phae_guy<span class="sc">$</span>sound.files <span class="ot">&lt;-</span> <span class="fu">paste0</span>(song_phae_guy<span class="sc">$</span>genus, <span class="st">"-"</span>, song_phae_guy<span class="sc">$</span>specific_epithet, <span class="st">"-"</span>, song_phae_guy<span class="sc">$</span>key, <span class="st">".wav"</span>)</span>
+<span id="cb21-222"><a href="#cb21-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-223"><a href="#cb21-223" aria-hidden="true" tabindex="-1"></a><span class="co"># and merge based on sound files and any metadata column we need</span></span>
+<span id="cb21-224"><a href="#cb21-224" aria-hidden="true" tabindex="-1"></a>pca_data_md <span class="ot">&lt;-</span> <span class="fu">merge</span>(pca_data, song_phae_guy[, <span class="fu">c</span>(<span class="st">"sound.files"</span>, <span class="st">"country"</span>, <span class="st">"latitude"</span>, <span class="st">"longitude"</span>)])</span>
+<span id="cb21-225"><a href="#cb21-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-226"><a href="#cb21-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-227"><a href="#cb21-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-228"><a href="#cb21-228" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-229"><a href="#cb21-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-230"><a href="#cb21-230" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assessing geographic patterns of variation</span></span>
+<span id="cb21-231"><a href="#cb21-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-232"><a href="#cb21-232" aria-hidden="true" tabindex="-1"></a>We are ready to plot the acoustic space scatterplot. For this we will use the package 'ggplot2':</span>
+<span id="cb21-233"><a href="#cb21-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-236"><a href="#cb21-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-237"><a href="#cb21-237" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("ggplot2")</span></span>
+<span id="cb21-238"><a href="#cb21-238" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb21-239"><a href="#cb21-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-240"><a href="#cb21-240" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("viridis")</span></span>
+<span id="cb21-241"><a href="#cb21-241" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb21-242"><a href="#cb21-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-243"><a href="#cb21-243" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb21-244"><a href="#cb21-244" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> country, <span class="at">shape =</span> country)) <span class="sc">+</span></span>
+<span id="cb21-245"><a href="#cb21-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> </span>
+<span id="cb21-246"><a href="#cb21-246" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>()</span>
+<span id="cb21-247"><a href="#cb21-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-248"><a href="#cb21-248" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-249"><a href="#cb21-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-250"><a href="#cb21-250" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-251"><a href="#cb21-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-252"><a href="#cb21-252" aria-hidden="true" tabindex="-1"></a>You can also add information about their geographic location (in this case longitude) to the plot as follows:</span>
+<span id="cb21-253"><a href="#cb21-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-256"><a href="#cb21-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb21-257"><a href="#cb21-257" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb21-258"><a href="#cb21-258" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> pca_data_md, <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> longitude, <span class="at">shape =</span> country)) <span class="sc">+</span></span>
+<span id="cb21-259"><a href="#cb21-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb21-260"><a href="#cb21-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()</span>
+<span id="cb21-261"><a href="#cb21-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-262"><a href="#cb21-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-263"><a href="#cb21-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-264"><a href="#cb21-264" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-265"><a href="#cb21-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-266"><a href="#cb21-266" aria-hidden="true" tabindex="-1"></a>We can even test if geographic distance is associated to acoustic distance (i.e. if individuals geographically closer produce more similar songs) using a <span class="co">[</span><span class="ot">mantel test</span><span class="co">](https://en.wikipedia.org/wiki/Mantel_test)</span> (<span class="in">`mantel`</span> function from the package vegan):</span>
+<span id="cb21-267"><a href="#cb21-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-268"><a href="#cb21-268" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE, message=FALSE}</span></span>
+<span id="cb21-269"><a href="#cb21-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-270"><a href="#cb21-270" aria-hidden="true" tabindex="-1"></a><span class="co"># create geographic and acoustic distance matrices</span></span>
+<span id="cb21-271"><a href="#cb21-271" aria-hidden="true" tabindex="-1"></a>geo_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"latitude"</span>, <span class="st">"longitude"</span>)])</span>
+<span id="cb21-272"><a href="#cb21-272" aria-hidden="true" tabindex="-1"></a>acoust_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(pca_data_md[, <span class="fu">c</span>(<span class="st">"PC1"</span>, <span class="st">"PC2"</span>)])</span>
+<span id="cb21-273"><a href="#cb21-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-274"><a href="#cb21-274" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("vegan")</span></span>
+<span id="cb21-275"><a href="#cb21-275" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb21-276"><a href="#cb21-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-277"><a href="#cb21-277" aria-hidden="true" tabindex="-1"></a><span class="co"># run test</span></span>
+<span id="cb21-278"><a href="#cb21-278" aria-hidden="true" tabindex="-1"></a><span class="fu">mantel</span>(geo_dist, acoust_dist)</span>
+<span id="cb21-279"><a href="#cb21-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-280"><a href="#cb21-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb21-281"><a href="#cb21-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-282"><a href="#cb21-282" aria-hidden="true" tabindex="-1"></a>&nbsp;</span>
+<span id="cb21-283"><a href="#cb21-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-284"><a href="#cb21-284" aria-hidden="true" tabindex="-1"></a>In this example no association between geographic and acoustic distance was detected (p value <span class="sc">\&gt;</span> 0.05).</span>
+<span id="cb21-285"><a href="#cb21-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-286"><a href="#cb21-286" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------</span>
+<span id="cb21-287"><a href="#cb21-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-288"><a href="#cb21-288" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">font</span><span class="ot"> size</span><span class="op">=</span><span class="st">"4"</span><span class="dt">&gt;</span>Session information<span class="dt">&lt;/</span><span class="kw">font</span><span class="dt">&gt;</span></span>
+<span id="cb21-289"><a href="#cb21-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-290"><a href="#cb21-290" aria-hidden="true" tabindex="-1"></a><span class="in">```{r session info, echo=F}</span></span>
+<span id="cb21-291"><a href="#cb21-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-292"><a href="#cb21-292" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span>
+<span id="cb21-293"><a href="#cb21-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-294"><a href="#cb21-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

@@ -29,40 +29,46 @@ Get recording metadata for green hermits (*Phaethornis guy*):
 
 ```{r, echo=FALSE,message=FALSE,  warning=FALSE}
 library(warbleR)
+library(suwo)
 ```
 
 ```{r, message=FALSE,  warning=FALSE, eval = FALSE}
 
-library(warbleR)
+library(suwo)
 
-pg <- query_xc(qword = 'Phaethornis guy', download = FALSE)
+# get cookies for WikiAves (only needs to be done once per session)
+access_wikiaves()
+
+Sys.setenv(xc_api_key = "YOUR_API_KEY_HERE")
+phae_guy <- query_xenocanto('Phaethornis guy', all_data = TRUE)
 
 ```
 
- 
 
 Keep only song vocalizations of high quality:
 
 ```{r, eval = FALSE}
 
-song_pg <- pg[grepl("song", ignore.case = TRUE, pg$Vocalization_type) & pg$Quality == "A", ]
+song_phae_guy <- phae_guy[grepl("song", ignore.case = TRUE, phae_guy$vocalization_type) & phae_guy$quality == "A", ]
 
 # remove 1 site from Colombia to have a few samples per country
-song_pg <- song_pg[song_pg$Locality != "Suaita, Santander", ]
+song_phae_guy <- song_phae_guy[song_phae_guy$locality != "Suaita, Santander", ]
 
 ```
 
- 
+```{r, eval = TRUE, echo = FALSE}
 
-```{r, echo=FALSE}
-song_pg <- read.csv("./examples/p_guy/metadata_p_guy_XC.csv")
+# write.csv(song_phae_guy, "./examples/p_guy/metadata_p_guy_XC.csv", row.names = FALSE)
+
+song_phae_guy <- read.csv("./examples/p_guy/metadata_p_guy_XC.csv")
+
 ```
 
 Map locations using [`map_xc()`](https://marce10.github.io/warbleR/reference/map_xc.html):
 
 ```{r, results = 'asis', fig.width=9}
 
-map_xc(song_pg, leaflet.map = TRUE)
+map_locations(song_phae_guy)
 
 ```
 
@@ -72,9 +78,11 @@ Once you feel fine with the subset of data you can go ahead and download the sou
 
 ```{r, eval = FALSE, fig.width=10}
 
-query_xc(X = song_pg, path = "./examples/p_guy", parallel = 3)
 
-write.csv(song_pg, file = "./examples/p_guy/metadata_p_guy_XC.csv", row.names = FALSE)
+download_media(metadata = song_phae_guy, 
+         path = "DIRECTORY WHERE YOU WANT TO SAVE THE FILES")
+
+write.csv(song_phae_guy, file = "./examples/p_guy/metadata_p_guy_XC.csv", row.names = FALSE)
 
 ```
 
@@ -204,13 +212,13 @@ Now we just need to add any metadata we considered important to try to explain a
 ```{r}
 
 # read XC metadata
-song_pg <- read.csv("./examples/p_guy/metadata_p_guy_XC.csv")
+song_phae_guy <- read.csv("./examples/p_guy/metadata_p_guy_XC.csv")
 
 # create a column with the file name in the metadata
-song_pg$sound.files <- paste0(song_pg$Genus, "-", song_pg$Specific_epithet, "-", song_pg$Recording_ID, ".wav")
+song_phae_guy$sound.files <- paste0(song_phae_guy$genus, "-", song_phae_guy$specific_epithet, "-", song_phae_guy$key, ".wav")
 
 # and merge based on sound files and any metadata column we need
-pca_data_md <- merge(pca_data, song_pg[, c("sound.files", "Country", "Latitude", "Longitude")])
+pca_data_md <- merge(pca_data, song_phae_guy[, c("sound.files", "country", "latitude", "longitude")])
 
 ```
 
@@ -229,7 +237,7 @@ library(ggplot2)
 library(viridis)
 
 # plot
-ggplot(data = pca_data_md, aes(x = PC1, y = PC2, color = Country, shape = Country)) +
+ggplot(data = pca_data_md, aes(x = PC1, y = PC2, color = country, shape = country)) +
   geom_point(size = 3) + 
   scale_color_viridis_d()
 
@@ -242,7 +250,7 @@ You can also add information about their geographic location (in this case longi
 ```{r}
 
 # plot
-ggplot(data = pca_data_md, aes(x = PC1, y = PC2, color = Longitude, shape = Country)) +
+ggplot(data = pca_data_md, aes(x = PC1, y = PC2, color = longitude, shape = country)) +
   geom_point(size = 3) +
   scale_color_viridis_c()
 
@@ -255,7 +263,7 @@ We can even test if geographic distance is associated to acoustic distance (i.e.
 ```{r, warning=FALSE, message=FALSE}
 
 # create geographic and acoustic distance matrices
-geo_dist <- dist(pca_data_md[, c("Latitude", "Longitude")])
+geo_dist <- dist(pca_data_md[, c("latitude", "longitude")])
 acoust_dist <- dist(pca_data_md[, c("PC1", "PC2")])
 
 # install.packages("vegan")
