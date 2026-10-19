@@ -2,8 +2,10 @@
 author: "Marcelo Araya-Salas"
 toc: false
 number-sections: false
-format: 
+format:
   revealjs:
+    width: 1600
+    height: 900
     self-contained: false
     incremental: false
     footer: "Marcelo Araya-Salas | Bioacoustic Analysis in R 2026"
